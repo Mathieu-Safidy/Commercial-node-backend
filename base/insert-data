@@ -1,0 +1,50 @@
+const db = require("./db")
+  .then(() => {
+    console.log("Collections créées avec succès");
+  })
+  .catch((err) => {
+    console.error("Erreur lors de la création des collections :", err);
+  });
+
+
+//  nom: { bsonType : "string" },
+db.profil.insertOne({
+  nom: "Admin",
+});
+
+// email: { bsonType: "string" },
+// username: { bsonType: "string" },
+// password: { bsonType: "string" },
+// idProfil: { bsonType: "objectId" }
+db.user.insertOne({
+  email: "john@gmail.com",
+  username: "John Doe",
+  password: "password123",
+  idProfil: ObjectId('698d82d101b30257098ce5b8')
+});
+
+// nom: { bsonType : "string" },
+// description: { bsonType : "string" },
+// createdAt: { bsonType: "date" },
+// deletedAt: { bsonType: "date" }
+db.categorie.insertOne({
+  nom: "Informatique",
+  description: "Catégorie pour les produits informatiques",
+  createdAt: new Date(),
+  deletedAt: null,
+});
+
+// nom: { bsonType : "string" },
+// description: { bsonType : "string" },
+// idUser: { bsonType: "objectId" },
+// idCategorie: { bsonType: "objectId" },
+// createdAt: { bsonType: "date" },
+// deletedAt: { bsonType: "date" }
+db.boutique.insertOne({
+  nom: "Massin",
+  description: "Boutique de materiels informatiques",
+  idUser: ObjectId('698d830701b30257098ce5b9'),
+  idCategorie: ObjectId('698d838401b30257098ce5ba'),
+  createdAt: new Date(),
+  deletedAt: null,
+});

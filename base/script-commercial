@@ -1,0 +1,374 @@
+const db = require('./db').then(() => {
+    console.log("Collections créées avec succès");
+}).catch((err) => {
+    console.error("Erreur lors de la création des collections :", err);
+});
+
+db.createCollection("user", {
+    validator: {
+        $jsonSchema: {
+            bsonType: "object",
+            properties: {
+                email: { bsonType: "string" },
+                username: { bsonType: "string" },
+                password: { bsonType: "string" },
+                idProfil: { bsonType: "objectId" }
+            }
+        }
+    }
+})
+
+db.createCollection("profil", {
+    validator: {
+        $jsonSchema: {
+            bsonType: "object",
+            properties: {
+                nom: { bsonType : "string" },
+            }
+        }
+    }
+})
+
+db.createCollection("demande", {
+    validator: {
+        $jsonSchema: {
+            bsonType: "object",
+            properties: {
+                dateDemande: { bsonType: "date" },
+                statut: { bsonType: "objectId" },
+                idUser: { bsonType: "objectId" }
+            }
+        }
+    }
+})
+
+db.createCollection("status", {
+    validator: {
+        $jsonSchema: {
+            bsonType: "object",
+            properties: {
+                nom: { bsonType : "string" },
+            }
+        }
+    }
+})
+
+db.createCollection("boutique", {
+    validator: {
+        $jsonSchema: {
+            bsonType: "object",
+            properties: {
+                nom: { bsonType : "string" },
+                description: { bsonType : "string" },
+                idUser: { bsonType: "objectId" },
+                idCategorie: { bsonType: "objectId" },
+                createdAt: { bsonType: "date" },
+                deletedAt: { bsonType: ["date", "null"] }
+            }
+        }
+    }
+})
+
+db.createCollection("categorie", {
+     validator: {
+        $jsonSchema: {
+            bsonType: "object",
+            properties: {
+                nom: { bsonType : "string" },
+                description: { bsonType : "string" },
+                createdAt: { bsonType: "date" },
+                deletedAt: { bsonType: ["date", "null"] }
+            }
+        }
+    }
+})
+
+db.createCollection("produit", {
+     validator: {
+        $jsonSchema: {
+            bsonType: "object",
+            properties: {
+                nom: { bsonType : "string" },
+                description: { bsonType : "string" },
+                idBoutique: { bsonType: "objectId" },
+                idCategorie: { bsonType: "objectId" },
+                prixInitial: { bsonType: ["double","int"] },
+                consultationCount: { bsonType: "int" },
+                modifiedAt: { bsonType: "date" },
+                createdAt: { bsonType: "date" },
+                deletedAt: { bsonType: ["date", "null"] },
+                quantiteDisponible: { bsonType: "int" }
+            }
+        }
+    }
+})
+
+db.createCollection("stock", {
+     validator: {
+        $jsonSchema: {
+            bsonType: "object",
+            properties: {
+                idProduit: { bsonType: "objectId" },
+                quantitEntre: { bsonType: "int" },
+                quantiteSortie: { bsonType: "int" },
+                quantiteDisponible: { bsonType: "int" },
+                modifiedAt: { bsonType: "date" },
+                createdAt: { bsonType: "date" }
+            }
+        }
+    }
+})
+
+db.createCollection("publication", {
+     validator: {
+        $jsonSchema: {
+            bsonType: "object",
+            properties: {
+                idUser: { bsonType: "objectId" },
+                description: { bsonType: "string" },
+                createdAt: { bsonType: "date" },
+                deletedAt: { bsonType: ["date", "null"] },
+                modifiedAt: { bsonType: "date" }
+            }
+        }
+    }
+})
+
+db.createCollection("commentaire", {
+     validator: {
+        $jsonSchema: {
+            bsonType: "object",
+            properties: {
+                idPublication: { bsonType: "objectId" },
+                idUser: { bsonType: "objectId" },
+                contenu: { bsonType: "string" },
+                createdAt: { bsonType: "date" },
+                deletedAt: { bsonType: ["date", "null"] }
+            }
+        }
+    }
+})
+
+db.createCollection("reaction", {
+     validator: {
+        $jsonSchema: {
+            bsonType: "object",
+            properties: {
+                idPublication: { bsonType: "objectId" },
+                idUser: { bsonType: "objectId" },
+                contenu: { bsonType: "string" },
+                createdAt: { bsonType: "date" },
+                deletedAt: { bsonType: ["date", "null"] }
+            }
+        }
+    }
+})
+
+db.createCollection("evenement", {
+     validator: {
+        $jsonSchema: {
+            bsonType: "object",
+            properties: {
+                dateEvenement: { bsonType: "date" },
+                description: { bsonType: "string" },
+                typeEvenement: { bsonType: "string" },
+                createdAt: { bsonType: "date" },
+                deletedAt: { bsonType: ["date", "null"] }
+            }
+        }
+    }
+})
+
+db.createCollection("billet", {
+     validator: {
+        $jsonSchema: {
+            bsonType: "object",
+            properties: {
+                idEvenement: { bsonType: "objectId" },
+                idUser: { bsonType: "objectId" },
+                prix: { bsonType: ["double","int"] },
+                createdAt: { bsonType: "date" }, 
+                deletedAt: { bsonType: ["date", "null"] }
+            }
+        }
+    }
+})
+
+db.createCollection("location", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      properties: {
+        note: { bsonType: "string" }, 
+        dateLocation: { bsonType: "date"},
+        idUser: { bsonType: "objectId" }
+      }
+    }
+  }
+})
+
+db.createCollection("detailLocation", {
+   validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      properties: {
+        idLocation: { bsonType: "objectId" },
+        dateDebut: { bsonType: "date" }, 
+        dateFin: { bsonType: "date"}, 
+        prixFinal: { bsonType: ["double","int"]}, 
+        createdAt: { bsonType: "date" }, 
+        deletedAt: { bsonType: "date"} 
+      }
+    }
+  }
+})
+
+db.createCollection("box", {
+  validator: { 
+    $jsonSchema: { 
+      bsonType: "object",
+      properties: {
+        dimension: { bsonType: ["double","int"] },
+        position: { bsonType: ["double","int"] }, 
+        numero: { bsonType: "int"}, 
+        deletedAt: { bsonType: "date"}, 
+        createdAt: { bsonType: "date" }, 
+        prixInitial: { bsonType: ["double","int"]} 
+      }
+    }
+  }
+})
+
+db.createCollection("venteAchat", {
+  validator: { 
+    $jsonSchema: { 
+      bsonType: "object",
+      properties: {
+        dateTransaction: { bsonType: "date"}, 
+        description: { bsonType: "string" }, 
+        idUser: { bsonType: "objectId" },
+        idBoutique: { bsonType: "objectId"}
+      }
+    }
+  }
+})
+
+db.createCollection("venteAchatDetail", {
+  validator: { 
+    $jsonSchema: { 
+      bsonType: "object",
+      properties: {
+        idVenteAchat: { bsonType: "objectId" }, 
+        idProduit: { bsonType: "objectId" },
+        deletedAt: { bsonType: "date"}, 
+        createdAt: { bsonType: "date" }, 
+        prixFinal: { bsonType: ["double","int"] }, 
+        quantite: { bsonType: "int"  }
+      }
+    }
+  }
+})
+
+db.createCollection("reservation", {
+  validator: { 
+    $jsonSchema: { 
+      bsonType: "object",
+      properties: {
+        idVenteAchat: { bsonType: "objectId" },
+        dateReservation: { bsonType: "date"},
+        avance: { bsonType: ["double","int"] },
+        status: { enum: ["en_cours", "terminee", "annulee"] },
+        idUser: { bsonType: "objectId" }
+      } 
+    }
+  }
+})
+
+db.createCollection("reservationDetail", {
+  validator: { 
+    $jsonSchema: {
+      bsonType: "object",
+      properties: {
+        idReservation: { bsonType: "objectId" }, 
+        idProduit: { bsonType: "objectId" },
+        quantite: { bsonType: "int" },
+        deletedAt: { bsonType: "date"},
+        createdAt: { bsonType: "date"}
+      }
+    }
+  }
+})
+
+db.createCollection("commande", {
+  validator: { 
+    $jsonSchema: {
+      bsonType: "object",
+      properties: {
+        idVenteAchat: { bsonType: "objectId" },
+        dateCommande: { bsonType: "date"},
+        status: { enum: ["en_cours", "terminee", "annulee"] },
+        idUser: { bsonType: "objectId" }
+      }
+    }
+  }
+})
+
+db.createCollection("commandeDetail", {
+  validator: { 
+    $jsonSchema: {
+      bsonType: "object",
+      properties: {
+        idCommande: { bsonType: "objectId" }, 
+        idProduit: { bsonType: "objectId" },
+        quantite: { bsonType: "int" },
+        deletedAt: { bsonType: "date"},
+        createdAt: { bsonType: "date"}
+      }
+    }
+  }
+})
+
+db.createCollection("promotion", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      properties: {
+        valeur: { bsonType: ["double","int"] },
+        idEvenement: { bsonType: "objectId" },
+        dateDebut: { bsonType: "date" },
+        dateFin: { bsonType: "date" },
+        idProduit: { bsonType: "objectId" },
+        reduction: { bsonType: "int" }
+      }
+    }
+  }
+})
+
+db.createCollection("note", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      properties: {
+        nombreEtoiles: { bsonType: "int" },
+        commentaire: { bsonType: "string" },
+        idProduit: { bsonType: "objectId" },
+        idBoutique: { bsonType: "objectId" },
+        idUser: { bsonType: "objectId" }
+      }
+    }
+  }
+})
+
+db.createCollection("notification", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      properties: {
+        dateNotification: { bsonType: "date" },
+        senderId: { bsonType: "objectId" },
+        receiverId: { bsonType: "objectId" },
+        message: { bsonType: "string" }
+      }
+    }
+  }
+})
