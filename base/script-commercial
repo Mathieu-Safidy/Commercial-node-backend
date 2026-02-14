@@ -94,7 +94,7 @@ db.createCollection("produit", {
                 idCategorie: { bsonType: "objectId" },
                 prixInitial: { bsonType: ["double","int"] },
                 consultationCount: { bsonType: "int" },
-                modifiedAt: { bsonType: "date" },
+                modifiedAt: { bsonType: ["date", "null"] },
                 createdAt: { bsonType: "date" },
                 deletedAt: { bsonType: ["date", "null"] },
                 quantiteDisponible: { bsonType: "int" }
@@ -112,7 +112,7 @@ db.createCollection("stock", {
                 quantitEntre: { bsonType: "int" },
                 quantiteSortie: { bsonType: "int" },
                 quantiteDisponible: { bsonType: "int" },
-                modifiedAt: { bsonType: "date" },
+                modifiedAt: { bsonType: ["date", "null"] },
                 createdAt: { bsonType: "date" }
             }
         }
@@ -128,7 +128,7 @@ db.createCollection("publication", {
                 description: { bsonType: "string" },
                 createdAt: { bsonType: "date" },
                 deletedAt: { bsonType: ["date", "null"] },
-                modifiedAt: { bsonType: "date" }
+                modifiedAt: { bsonType: ["date", "null"] }
             }
         }
     }
@@ -217,7 +217,7 @@ db.createCollection("detailLocation", {
         dateFin: { bsonType: "date"}, 
         prixFinal: { bsonType: ["double","int"]}, 
         createdAt: { bsonType: "date" }, 
-        deletedAt: { bsonType: "date"} 
+        deletedAt: { bsonType: ["date", "null"]} 
       }
     }
   }
@@ -231,7 +231,7 @@ db.createCollection("box", {
         dimension: { bsonType: ["double","int"] },
         position: { bsonType: ["double","int"] }, 
         numero: { bsonType: "int"}, 
-        deletedAt: { bsonType: "date"}, 
+        deletedAt: { bsonType: ["date", "null"]}, 
         createdAt: { bsonType: "date" }, 
         prixInitial: { bsonType: ["double","int"]} 
       }
@@ -260,7 +260,7 @@ db.createCollection("venteAchatDetail", {
       properties: {
         idVenteAchat: { bsonType: "objectId" }, 
         idProduit: { bsonType: "objectId" },
-        deletedAt: { bsonType: "date"}, 
+        deletedAt: { bsonType: ["date", "null"]}, 
         createdAt: { bsonType: "date" }, 
         prixFinal: { bsonType: ["double","int"] }, 
         quantite: { bsonType: "int"  }
@@ -292,7 +292,7 @@ db.createCollection("reservationDetail", {
         idReservation: { bsonType: "objectId" }, 
         idProduit: { bsonType: "objectId" },
         quantite: { bsonType: "int" },
-        deletedAt: { bsonType: "date"},
+        deletedAt: { bsonType: ["date", "null"]},
         createdAt: { bsonType: "date"}
       }
     }
@@ -321,7 +321,7 @@ db.createCollection("commandeDetail", {
         idCommande: { bsonType: "objectId" }, 
         idProduit: { bsonType: "objectId" },
         quantite: { bsonType: "int" },
-        deletedAt: { bsonType: "date"},
+        deletedAt: { bsonType: ["date", "null"]},
         createdAt: { bsonType: "date"}
       }
     }
