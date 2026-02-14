@@ -372,3 +372,30 @@ db.createCollection("notification", {
     }
   }
 })
+
+db.createCollection("panier", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      properties: {
+        idUser: { bsonType: "objectId" },
+        createdAt: { bsonType: "date" },
+        deletedAt: { bsonType: ["date", "null"] }
+      }
+    }
+  }
+})
+db.createCollection("panierDetail", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      properties: {
+        idPanier: { bsonType: "objectId" },
+        idProduit: { bsonType: "objectId" },
+        quantite: { bsonType: "int" },
+        deletedAt: { bsonType: ["date", "null"]},
+        createdAt: { bsonType: "date"}
+      }
+    }
+  }
+})

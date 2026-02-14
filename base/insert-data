@@ -48,3 +48,11 @@ db.boutique.insertOne({
   createdAt: new Date(),
   deletedAt: null,
 });
+  // idUser: { bsonType: "objectId" },
+  //       createdAt: { bsonType: "date" },
+  //       deletedAt: { bsonType: ["date", "null"] }
+db.panier.insertOne({
+  idUser: ObjectId('698dfddc709de29d54628ca1'),
+  createdAt: new Date(),
+  deletedAt: null,
+})
