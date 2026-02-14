@@ -20,7 +20,7 @@ db.user.insertOne({
   email: "john@gmail.com",
   username: "John Doe",
   password: "password123",
-  idProfil: ObjectId('698d82d101b30257098ce5b8')
+  idProfil: ObjectId('69903ac6cefeb3862e628ca4')
 });
 
 // nom: { bsonType : "string" },
@@ -43,8 +43,8 @@ db.categorie.insertOne({
 db.boutique.insertOne({
   nom: "Massin",
   description: "Boutique de materiels informatiques",
-  idUser: ObjectId('698d830701b30257098ce5b9'),
-  idCategorie: ObjectId('698d838401b30257098ce5ba'),
+  idUser: ObjectId('69903ae1cefeb3862e628ca5'),
+  idCategorie: ObjectId('69903afccefeb3862e628ca6'),
   createdAt: new Date(),
   deletedAt: null,
 });
