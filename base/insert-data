@@ -56,3 +56,39 @@ db.panier.insertOne({
   createdAt: new Date(),
   deletedAt: null,
 })
+//  idPanier: { bsonType: "objectId" },
+//         idProduit: { bsonType: "objectId" },
+//         quantite: { bsonType: "int" },
+//         deletedAt: { bsonType: ["date", "null"]},
+//         createdAt: { bsonType: "date"}
+db.panierDetail.insertOne({
+  idPanier: ObjectId('69907523489c38b47f628ca0'),
+  idProduit: ObjectId('699075f6489c38b47f628ca1'),
+  quantite: 5,
+  deletedAt: null,
+  createdAt: new Date(),
+})
+
+//  nom: { bsonType : "string" },
+//   description: { bsonType : "string" },
+//   idBoutique: { bsonType: "objectId" },
+//   idCategorie: { bsonType: "objectId" },
+//   prixInitial: { bsonType: ["double","int"] },
+//   consultationCount: { bsonType: "int" },
+//   modifiedAt: { bsonType: ["date", "null"] },
+//   createdAt: { bsonType: "date" },
+//   deletedAt: { bsonType: ["date", "null"] },
+//   quantiteDisponible: { bsonType: "int" }
+db.produit.insertOne({
+  nom: "Ordinateur portable",
+  description: "Un ordinateur portable puissant pour le travail et les loisirs",
+  idBoutique: ObjectId('698dff42709de29d54628ca3'),
+  idCategorie: ObjectId('698dfde1709de29d54628ca2'),
+  prixInitial: 999.99,
+  consultationCount: 0, 
+  modifiedAt: null,
+  createdAt: new Date(),
+  deletedAt: null,
+  quantiteDisponible: 10
+})
+

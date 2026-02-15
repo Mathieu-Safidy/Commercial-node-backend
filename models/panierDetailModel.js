@@ -10,7 +10,8 @@ const panierDetailSchema = new mongoose.Schema({
     idProduit: { type: mongoose.Schema.Types.ObjectId, ref: 'produit', required: true },
     quantite: { type: Number, required: true , default: 0 },
     deletedAt: { type: Date, required: false, default: null },
-    createdAt: { type: Date, required: true, default: Date.now }
+    createdAt: { type: Date, required: true, default: Date.now },
+    produit: { type: mongoose.Schema.Types.ObjectId, ref: 'produit'}
 })
 
 module.exports = mongoose.model('panierDetail', panierDetailSchema, 'panierDetail')

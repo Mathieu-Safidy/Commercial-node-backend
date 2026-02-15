@@ -1,25 +1,22 @@
 const panierDetailModel = require("../models/panierDetailModel");
 
-const panierDetailRepository = () => {
-  const getPanierDetailsByPanierId = async (panierId) => {
+class PanierDetailRepository {
+  static getPanierDetailsByPanierId = async (panierId) => {
     return await panierDetailModel.find({ idPanier: panierId });
   };
-  const savePanierDetail = async (panierDetail) => {
+  static savePanierDetail = async (panierDetail) => {
     const newPanierDetail = new panierDetailModel(panierDetail);
     return await newPanierDetail.save();
   };
-  const updatePanierDetail = async (id, panierDetail) => {
+  static updatePanierDetail = async (id, panierDetail) => {
     return await panierDetailModel.findByIdAndUpdate(id, panierDetail, {
       new: true,
       runValidators: true,
     });
   };
-
-  return {
-    getPanierDetailsByPanierId,
-    savePanierDetail,
-    updatePanierDetail,
-  };
+  static deletePanierDetail = async (id) => {
+    return await panierDetailModel.findByIdAndDelete(id);
+  }
 };
 
-module.exports = panierDetailRepository;
+module.exports = PanierDetailRepository;

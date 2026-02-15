@@ -379,6 +379,7 @@ db.createCollection("panier", {
       bsonType: "object",
       properties: {
         idUser: { bsonType: "objectId" },
+        state: { enum: ["en_cours", "termine"] },
         createdAt: { bsonType: "date" },
         deletedAt: { bsonType: ["date", "null"] }
       }
@@ -393,7 +394,7 @@ db.createCollection("panierDetail", {
         idPanier: { bsonType: "objectId" },
         idProduit: { bsonType: "objectId" },
         quantite: { bsonType: "int" },
-        deletedAt: { bsonType: ["date", "null"]},
+        modifiedAt: { bsonType: ["date", "null"]},
         createdAt: { bsonType: "date"}
       }
     }

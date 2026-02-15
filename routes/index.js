@@ -1,8 +1,18 @@
 var express = require('express');
-const panierController = require('../controllers/panierController');
+const PanierController = require('../controllers/panierController');
+const ProduitController = require('../controllers/produitController');
 var router = express.Router();
 
-router.get('/paniers', panierController().getAllPaniers);
+router.get('/produits', ProduitController.getAllProduits);
+
+
+router.patch('/paniers/modify/details/:idDetail', PanierController.modifyDetailFromPanier);
+router.delete('/paniers/delete/details/:idDetail', PanierController.deleteDetailFromPanier);
+// router.post('/paniers/add/details/:panierId', PanierController.addDetailToPanier);
+router.post('/paniers/add/details/:idUser', PanierController.addToPanier);
+router.post('/paniers/add', PanierController.createPanier);
+router.get('/paniers/actif/:idUser', PanierController.getPanierActifByIdUser);
+router.get('/paniers', PanierController.getAllPaniers);
 
 /* GET home page. */
 router.get('/', function(req, res) {

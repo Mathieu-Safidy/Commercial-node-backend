@@ -1,30 +1,31 @@
 const panierDetailModel = require("../models/panierDetailModel");
 const panierModel = require("../models/panierModel");
 
-const panierRepository = () => {
-  const getAllPaniers = async () => {
+class PanierRepository {
+  static getAllPaniers = async () => {
     return await panierModel.find();
   };
-  const getPanierByIdUser = async (idUser) => {
+  static getPanierByIdUser = async (idUser) => {
     return await panierModel.findOne({ idUser: idUser, deletedAt: null });
   }
-  const savePanier = async (panier) => {
+  static getPanierActifById = async (id) => {
+    return await panierModel.findOne({ _id: id, deletedAt: null , state: 'en_cours' });
+  }
+  static getPanierActifByIdUser = async (idUser) => {
+    return await panierModel.findOne({ idUser: idUser, deletedAt: null , state: 'en_cours' });
+  }
+  
+  static savePanier = async (panier) => {
     const newPanier = new panierModel(panier);
     return await newPanier.save();
   };
-  const updatePanier = async (id, panier) => {
+  static updatePanier = async (id, panier) => {
     return await panierModel.findByIdAndUpdate(id, panier, {
       new: true,
       runValidators: true,
     });
   }
 
-  return {
-    getAllPaniers,
-    getPanierByIdUser,
-    savePanier,
-    updatePanier,
-  };
 };
 
-module.exports = panierRepository;
+module.exports = PanierRepository;
