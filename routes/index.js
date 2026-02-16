@@ -3,6 +3,11 @@ const PanierController = require('../controllers/panierController');
 const ProduitController = require('../controllers/produitController');
 var router = express.Router();
 
+var commandeRouter = require("./commandeRoute");
+var commandeDetailRouter = require("./commandeDetailRoute");
+
+router.use('/commandes' , commandeRouter) ;
+router.use('/commandeDetails' , commandeDetailRouter) ;
 router.get('/produits', ProduitController.getAllProduits);
 
 

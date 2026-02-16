@@ -48,6 +48,256 @@ db.boutique.insertOne({
   createdAt: new Date(),
   deletedAt: null,
 });
+
+db.users.insertMany([
+  {
+    email: "alice@example.com",
+    username: "alice123",
+    password: "password1",
+    idProfil: ObjectId("651c2a1b1b1b1b1b1b1b1c01")
+  },
+  {
+    email: "bob@example.com",
+    username: "bob_the_builder",
+    password: "password2",
+    idProfil: ObjectId("651c2a1b1b1b1b1b1b1b1c02")
+  },
+  {
+    email: "carol@example.com",
+    username: "carolX",
+    password: "password3",
+    idProfil: ObjectId("651c2a1b1b1b1b1b1b1b1c03")
+  },
+  {
+    email: "dave@example.com",
+    username: "dave_d",
+    password: "password4",
+    idProfil: ObjectId("651c2a1b1b1b1b1b1b1b1c04")
+  },
+  {
+    email: "eve@example.com",
+    username: "eve_007",
+    password: "password5",
+    idProfil: ObjectId("651c2a1b1b1b1b1b1b1b1c05")
+  }
+]);
+
+//---------------------------------------------PRODUIT---------------------------------------------
+db.produit.insertMany([
+  {
+    nom: "Chaussure Sport Nike",
+    description: "Chaussure confortable pour le sport",
+    idBoutique: ObjectId("65a111111111111111111111"),
+    idCategorie: ObjectId("65b222222222222222222222"),
+    prixInitial: 150000,
+    consultationCount: 12,
+    modifiedAt: null,
+    createdAt: new Date(),
+    deletedAt: null,
+    quantiteDisponible: 25
+  },
+  {
+    nom: "T-Shirt Adidas",
+    description: "T-shirt en coton de haute qualité",
+    idBoutique: ObjectId("65a111111111111111111111"),
+    idCategorie: ObjectId("65b333333333333333333333"),
+    prixInitial: 50000,
+    consultationCount: 5,
+    modifiedAt: null,
+    createdAt: new Date(),
+    deletedAt: null,
+    quantiteDisponible: 100
+  },
+  {
+    nom: "Sac à dos Puma",
+    description: "Sac à dos léger et résistant",
+    idBoutique: ObjectId("65a444444444444444444444"),
+    idCategorie: ObjectId("65b222222222222222222222"),
+    prixInitial: 80000,
+    consultationCount: 20,
+    modifiedAt: new Date(),
+    createdAt: new Date(),
+    deletedAt: null,
+    quantiteDisponible: 40
+  }
+])
+
+//---------------------------------------------USER---------------------------------------------
+db.user.insertMany([
+  {
+    email: "admin@gmail.com",
+    username: "admin",
+    password: "admin123",
+    idProfil: ObjectId("65c111111111111111111111")
+  },
+  {
+    email: "client1@gmail.com",
+    username: "client1",
+    password: "client123",
+    idProfil: ObjectId("65c222222222222222222222")
+  },
+  {
+    email: "vendeur1@gmail.com",
+    username: "vendeur1",
+    password: "vendeur123",
+    idProfil: ObjectId("65c333333333333333333333")
+  }
+])
+db.user.insertMany([
+  {
+    email: "client2@gmail.com",
+    username: "client2",
+    password: "client123",
+    idProfil: ObjectId("65c222222222222222222222")
+  },
+  {
+    email: "client3@gmail.com",
+    username: "client3",
+    password: "client123",
+    idProfil: ObjectId("65c222222222222222222222")
+  },
+  {
+    email: "client4@gmail.com",
+    username: "client4",
+    password: "client123",
+    idProfil: ObjectId("65c222222222222222222222")
+  },
+  {
+    email: "client5@gmail.com",
+    username: "client5",
+    password: "client123",
+    idProfil: ObjectId("65c222222222222222222222")
+  },
+  {
+    email: "client6@gmail.com",
+    username: "client6",
+    password: "client123",
+    idProfil: ObjectId("65c222222222222222222222")
+  },
+  {
+    email: "client7@gmail.com",
+    username: "client7",
+    password: "client123",
+    idProfil: ObjectId("65c222222222222222222222")
+  },
+  {
+    email: "client8@gmail.com",
+    username: "client8",
+    password: "client123",
+    idProfil: ObjectId("65c222222222222222222222")
+  }
+])
+
+//---------------------------------------------COMMANDE---------------------------------------------
+db.commande.insertMany([
+  {
+    idVenteAchat: ObjectId("6993108302b2f1054a628ca0"), // juste un exemple, peut être le même que _id commandeDetail plus tard
+    dateCommande: new Date("2026-02-16T08:00:00Z"),
+    status: "en_cours",
+    idUser: ObjectId("69930fc102b2f1054a628ca4") // client1
+  },
+  {
+    idVenteAchat: ObjectId("6993108302b2f1054a628ca1"),
+    dateCommande: new Date("2026-02-16T09:30:00Z"),
+    status: "terminee",
+    idUser: ObjectId("6993108302b2f1054a628ca6") // client2
+  },
+  {
+    idVenteAchat: ObjectId("6993108302b2f1054a628ca2"),
+    dateCommande: new Date("2026-02-16T10:15:00Z"),
+    status: "annulee",
+    idUser: ObjectId("6993108302b2f1054a628ca7") // client3
+  },
+  {
+    idVenteAchat: ObjectId("6993108302b2f1054a628ca3"),
+    dateCommande: new Date("2026-02-16T11:00:00Z"),
+    status: "en_cours",
+    idUser: ObjectId("6993108302b2f1054a628ca8") // client4
+  },
+  {
+    idVenteAchat: ObjectId("6993108302b2f1054a628ca4"),
+    dateCommande: new Date("2026-02-16T11:45:00Z"),
+    status: "terminee",
+    idUser: ObjectId("6993108302b2f1054a628ca9") // client5
+  }
+])
+
+
+//---------------------------------------------COMMANDE DETAIL--------------------------------------
+db.commandeDetail.insertMany([
+  // Détails pour la commande 6993117002b2f1054a628cad (client1)
+  {
+    idCommande: ObjectId("6993117002b2f1054a628cad"),
+    idProduit: ObjectId("69930fa402b2f1054a628ca0"), // Chaussure Sport Nike
+    quantite: 2,
+    deletedAt: null,
+    createdAt: new Date("2026-02-16T08:00:00Z")
+  },
+  {
+    idCommande: ObjectId("6993117002b2f1054a628cad"),
+    idProduit: ObjectId("69930fa402b2f1054a628ca1"), // T-Shirt Adidas
+    quantite: 1,
+    deletedAt: null,
+    createdAt: new Date("2026-02-16T08:05:00Z")
+  },
+
+  // Détails pour la commande 6993117002b2f1054a628cae (client2)
+  {
+    idCommande: ObjectId("6993117002b2f1054a628cae"),
+    idProduit: ObjectId("69930fa402b2f1054a628ca2"), // Sac à dos Puma
+    quantite: 1,
+    deletedAt: null,
+    createdAt: new Date("2026-02-16T09:30:00Z")
+  },
+  {
+    idCommande: ObjectId("6993117002b2f1054a628cae"),
+    idProduit: ObjectId("69930fa402b2f1054a628ca1"), // T-Shirt Adidas
+    quantite: 3,
+    deletedAt: null,
+    createdAt: new Date("2026-02-16T09:35:00Z")
+  },
+
+  // Détails pour la commande 6993117002b2f1054a628caf (client3)
+  {
+    idCommande: ObjectId("6993117002b2f1054a628caf"),
+    idProduit: ObjectId("69930fa402b2f1054a628ca0"), // Chaussure Sport Nike
+    quantite: 1,
+    deletedAt: null,
+    createdAt: new Date("2026-02-16T10:15:00Z")
+  },
+
+  // Détails pour la commande 6993117002b2f1054a628cb0 (client4)
+  {
+    idCommande: ObjectId("6993117002b2f1054a628cb0"),
+    idProduit: ObjectId("69930fa402b2f1054a628ca2"), // Sac à dos Puma
+    quantite: 2,
+    deletedAt: null,
+    createdAt: new Date("2026-02-16T11:00:00Z")
+  },
+  {
+    idCommande: ObjectId("6993117002b2f1054a628cb0"),
+    idProduit: ObjectId("69930fa402b2f1054a628ca0"), // Chaussure Sport Nike
+    quantite: 1,
+    deletedAt: null,
+    createdAt: new Date("2026-02-16T11:05:00Z")
+  },
+
+  // Détails pour la commande 6993117002b2f1054a628cb1 (client5)
+  {
+    idCommande: ObjectId("6993117002b2f1054a628cb1"),
+    idProduit: ObjectId("69930fa402b2f1054a628ca1"), // T-Shirt Adidas
+    quantite: 4,
+    deletedAt: null,
+    createdAt: new Date("2026-02-16T11:45:00Z")
+  },
+  {
+    idCommande: ObjectId("6993117002b2f1054a628cb1"),
+    idProduit: ObjectId("69930fa402b2f1054a628ca2"), // Sac à dos Puma
+    quantite: 1,
+    deletedAt: null,
+    createdAt: new Date("2026-02-16T11:50:00Z")
+  }
+])
   // idUser: { bsonType: "objectId" },
   //       createdAt: { bsonType: "date" },
   //       deletedAt: { bsonType: ["date", "null"] }
