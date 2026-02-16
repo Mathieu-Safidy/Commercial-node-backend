@@ -1,18 +1,13 @@
-// db.js
-const { MongoClient } = require("mongodb");
+const mongoose = require("mongoose");
 
-const uri = "mongodb://localhost:27017";
-const client = new MongoClient(uri);
-
-let db;
-
-async function connectDB() {
-  if (!db) {
-    await client.connect();
-    db = client.db("commercial"); // ta base
-    console.log("MongoDB connecté !");
+const connectDB = async () => {
+  try {
+    await mongoose.connect("mongodb://localhost:27017/commercial");
+    console.log("MongoDB connecté avec Mongoose");
+  } catch (error) {
+    console.error(error);
+    process.exit(1);
   }
-  return db;
-}
+};
 
 module.exports = connectDB;

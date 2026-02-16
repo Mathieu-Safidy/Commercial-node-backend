@@ -15,4 +15,4 @@ const boutiqueShema = new mongoose.Schema({
     deletedAt: { type: Date, default: null }
 })
 
-module.exports = mongoose.model('Boutique', boutiqueShema)
+module.exports = mongoose.model('boutique', boutiqueShema, 'boutique')
