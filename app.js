@@ -21,12 +21,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(cors());
-
+app.use(cors({
+  origin: 'http://localhost:4200', // Remplacez par l'URL de votre frontend
+  methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+const connectDB = require('./base/db');
+connectDB();
 
 const {catchError, errorhandler} = require('./middleware/ErrorCacthing');
 
-app.use('/', indexRouter);
+app.use('/api', indexRouter);
 
 app.use(catchError);
 
