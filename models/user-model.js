@@ -11,4 +11,4 @@ const userShema = new mongoose.Schema({
     idProfil: { type: mongoose.Schema.Types.ObjectId, ref: 'Profil', required: true }
 })
 
-module.exports = mongoose.model('User', userShema)
+module.exports = mongoose.model('user', userShema , 'user')
