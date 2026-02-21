@@ -17,4 +17,6 @@ router.patch("/:id", commandeController.updateCommande);
 // Supprimer une commande
 router.delete("/:id", commandeController.deleteCommande);
 
+router.post("/confirme/:idUser", commandeController.confirmeClientCommande);
+
 module.exports = router;
