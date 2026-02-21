@@ -20,6 +20,7 @@ const produitSchema = new mongoose.Schema({
     modifiedAt: { type: Date, required: false, default: null },
     createdAt: { type: Date, required: true, default: Date.now },
     deletedAt: { type: Date, required: false, default: null },
-    quantiteDisponible: { type: Number, required: true }
+    quantiteDisponible: { type: Number, required: true },
+    image : { type: String, required: false , default: '' }
 })
 module.exports = mongoose.model('produit', produitSchema, 'produit')

@@ -18,6 +18,16 @@ class ProduitService {
         );
         return produits;
     }
+
+    static saveProduit = async (produitData) => {
+        const produit = await ProduitRepository.saveProduit(produitData);
+        return produit;
+    }
+
+    static updateProduit = async (id, produitData) => {
+        const updatedProduit = await ProduitRepository.updateProduit(id, produitData);
+        return updatedProduit;
+    }
 }
 
 module.exports = ProduitService;

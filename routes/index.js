@@ -6,13 +6,16 @@ var commandeRouter = require("./commandeRoute");
 var commandeDetailRouter = require("./commandeDetailRoute");
 var stockRouter = require("./stockRoute") ;
 var panierRouter = require("./panierRouter") ;
+var produitRouter = require("./produitRoute") ;
+var categorieRouter = require("./categorieRoute") ;
 
+router.use('/categories', categorieRouter) ;
 router.use('/commandes' , commandeRouter) ;
 router.use('/commandeDetails' , commandeDetailRouter) ;
 router.use('/paniers' , panierRouter) ;
 router.use('/stocks', stockRouter) ;
-
-router.get('/produits', ProduitController.getAllProduits);
+router.use('/produits', produitRouter) ;
+// router.get('/produits', ProduitController.getAllProduits);
 
 
 
