@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const boxController = require("../controllers/BoxController");
+const boxController = require("../controllers/boxController");
 
 // Récupérer tous les box
 router.get("/", boxController.getBoxes);

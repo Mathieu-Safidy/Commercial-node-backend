@@ -7,6 +7,8 @@ services:
     restart: unless-stopped
     environment:
       - MONGO_URL=mongodb://mongodb:27017/commercialdb
+    ports:
+      - "3000:3000"
     depends_on:
       - mongodb
     networks:
@@ -16,6 +18,8 @@ services:
     image: mongo:7
     container_name: commercial-mongodb
     restart: unless-stopped
+    ports:
+      - "27017:27017"
     volumes:
       - mongo-data:/data/db
     networks:

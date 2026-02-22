@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const commandeController = require("../controllers/CommandeController");
+const commandeController = require("../controllers/commandeController");
 
 // Récupérer toutes les commandes
 router.get("/", commandeController.getCommandes);
