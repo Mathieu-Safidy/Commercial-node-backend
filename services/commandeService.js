@@ -1,5 +1,9 @@
 const commandeRepo = require('../repositories/commandeRepositorie');
+const commandeDetailRepo = require('../repositories/commandeDetailRepositorie');
 const commandeDetailService = require('../services/commandeDetailService');
+const panierService = require('../services/panierService') ;
+const panierDetailService = require('../services/panierDetailService');
+const {Schema} = require("mongoose");
 
 class CommandeService {
     async createCommande(data) {
@@ -46,8 +50,39 @@ class CommandeService {
         return commandeRepo.delete(id);
     }
 
-    async totalPrixCommande() {
+    async addPanierCommande(idUser, idVenteAchat) {
 
+        const panierUser = await panierService.getPanierActifByIdUser(idUser);
+
+        if (!panierUser) {
+            throw new Error("Aucun panier actif trouvé");
+        }
+
+        const panierDetails = await panierDetailService.getByPanierId(panierUser._id);
+        if (!panierDetails.length) {
+            throw new Error("Panier vide");
+        }
+
+        const commande = await commandeRepo.create({
+            idVenteAchat: idVenteAchat,
+            dateCommande: panierUser.createdAt,
+            idUser: idUser,
+            status: "en_cours"
+        });
+
+        for (const detail of panierDetails) {
+            await commandeDetailRepo.create({
+                idCommande: commande._id,
+                idProduit: detail.idProduit,
+                quantite: detail.quantite,
+                createdAt: detail.createdAt
+            });
+        }
+        // await panierService.updatePanier(panier._id, {
+        //     state: "valide"
+        // });
+
+        return commande;
     }
 }
 

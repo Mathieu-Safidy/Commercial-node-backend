@@ -17,6 +17,12 @@ class PanierDetailRepository {
   static deletePanierDetail = async (id) => {
     return await panierDetailModel.findByIdAndDelete(id);
   }
+  static findByPanierId = async (idPanier) => {
+    return await panierDetailModel.find({
+      idPanier: idPanier,
+      deletedAt: null
+    }).populate("idProduit");
+  };
 };
 
 module.exports = PanierDetailRepository;

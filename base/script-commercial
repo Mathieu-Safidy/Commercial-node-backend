@@ -213,9 +213,11 @@ db.createCollection("detailLocation", {
       bsonType: "object",
       properties: {
         idLocation: { bsonType: "objectId" },
+        idBox: { bsonType: "objectId" },
         dateDebut: { bsonType: "date" }, 
         dateFin: { bsonType: "date"}, 
-        prixFinal: { bsonType: ["double","int"]}, 
+        prixFinal: { bsonType: ["double","int"]},
+        status: {enum: ["en attente", "valide", "annulee"]},
         createdAt: { bsonType: "date" }, 
         deletedAt: { bsonType: ["date", "null"]} 
       }

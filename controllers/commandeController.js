@@ -50,6 +50,15 @@ class CommandeController {
             res.status(400).json({ message: err.message });
         }
     }
+    async confirmeClientCommande(req , res) {
+        try{
+            const { idUser } = req.params;
+            commandeService.addPanierCommande(idUser, "65fd9a4e8f2c4a1d9c123456") ;
+        } catch(err) {
+            console.error(err);
+            res.status(400).json({ message: err.message });
+        }
+    }
 }
 
 module.exports = new CommandeController();

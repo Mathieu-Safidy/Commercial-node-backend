@@ -1,9 +1,21 @@
 var express = require('express');
 const ProduitController = require('../controllers/produitController');
+const LocationController = require('../controllers/locationController') ;
+
 var router = express.Router();
 
 var commandeRouter = require("./commandeRoute");
 var commandeDetailRouter = require("./commandeDetailRoute");
+var locationRouter = require("./locationRoute");
+var detailLocationRouter = require("./detailLocationRoute") ;
+var boxRouter = require("./boxRoute") ;
+router.use('/commandes', commandeRouter);
+router.use('/commandeDetails', commandeDetailRouter);
+router.use('/locations', locationRouter);
+router.use('/detailLocations', detailLocationRouter);
+router.use('/boxes', boxRouter);
+
+
 var stockRouter = require("./stockRoute") ;
 var panierRouter = require("./panierRouter") ;
 var produitRouter = require("./produitRoute") ;
