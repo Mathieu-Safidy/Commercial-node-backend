@@ -1,0 +1,30 @@
+name: Deploy Docker Compose to DigitalOcean
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Récupérer le code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2️⃣ Configurer SSH
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.9.1
+        with:
+          ssh-private-key: ${{ secrets.DO_SSH_KEY }}
+
+      # 3️⃣ Déployer via SSH
+      - name: Deploy on Droplet
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.DO_USER }}@${{ secrets.DO_HOST }} "
+            cd ${{ secrets.APP_DIR }} || mkdir -p ${{ secrets.APP_DIR }} && cd ${{ secrets.APP_DIR }};
+            git pull origin main;
+            docker-compose down;
+            docker-compose up -d --build
+          "
