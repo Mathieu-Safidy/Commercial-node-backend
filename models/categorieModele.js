@@ -11,4 +11,4 @@ const categorieSchema = new mongoose.Schema({
     deletedAt: { type: Date, default: null }
 })
 
-module.exports = mongoose.model('Categorie', categorieSchema)
+module.exports = mongoose.model('categorie', categorieSchema, 'categorie')
