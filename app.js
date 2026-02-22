@@ -28,6 +28,7 @@ app.use(cors({
 }));
 const connectDB = require('./base/db');
 connectDB();
+app.use('/uploads', express.static('uploads'));
 
 const {catchError, errorhandler} = require('./middleware/ErrorCacthing');
 
