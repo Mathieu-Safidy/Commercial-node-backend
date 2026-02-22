@@ -23,8 +23,18 @@ jobs:
       - name: Deploy on Droplet
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.DO_USER }}@${{ secrets.DO_HOST }} "
-            cd ${{ secrets.APP_DIR }} || mkdir -p ${{ secrets.APP_DIR }} && cd ${{ secrets.APP_DIR }};
+          # Si le dossier n'existe pas, cloner le repo
+          if [ ! -d '${{ secrets.APP_DIR }}/.git' ]; then
+            git clone ${{ secrets.REPO_URL }} ${{ secrets.APP_DIR }};
+          else
+            cd ${{ secrets.APP_DIR }};
             git pull origin main;
-            docker-compose down;
-            docker-compose up -d --build
+          fi
+
+          # Aller dans le dossier
+          cd ${{ secrets.APP_DIR }};
+
+          # Relancer les containers Docker Compose
+          docker-compose down;
+          docker-compose up -d --build;
           "
