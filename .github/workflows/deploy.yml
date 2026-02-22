@@ -28,7 +28,7 @@ jobs:
             git clone ${{ secrets.REPO_URL }} ${{ secrets.APP_DIR }};
           else
             cd ${{ secrets.APP_DIR }};
-            git pull origin master;
+            git pull origin deploiment;
           fi
 
           # Aller dans le dossier
