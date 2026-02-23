@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors({
-  origin: ['http://localhost:4200','http://localhost:8080'], // Remplacez par l'URL de votre frontend
+  origin: ['http://localhost:4200','http://localhost:8080' , 'https://m1p13mean-safidy-mirindra.dev'], // Remplacez par l'URL de votre frontend
   methods: ['GET', 'POST', 'PATCH', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
