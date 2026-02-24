@@ -1,4 +1,4 @@
-const User = require('../models/user-model');
+const User = require('../models/userModel');
 
 class UserRepository {
     async create(data) {
@@ -10,7 +10,7 @@ class UserRepository {
     }
 
     async findById(id) {
-        return User.findById(id).populate('idProfil');
+        return User.findOne({_id: id}).populate('idProfil');
     }
 
     async findByEmail(email) {

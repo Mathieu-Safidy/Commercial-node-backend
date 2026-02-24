@@ -1,5 +1,5 @@
 const Commande = require("../models/commandeModel");
-const User = require("../models/user-model");
+const User = require("../models/userModel");
 
 class CommandeRepository {
     async create(data) {
