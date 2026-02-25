@@ -2,21 +2,30 @@ const userModel = require('../models/userModel')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 const ProfilRepository = require('../repositories/profilRepository');
-
+const dotenv = require('dotenv');
+dotenv.config();
 class AuthService {
   static async login(email, password, role) {
-    const passwordHash = this.hashPassword(password);
-    const user = await userModel.findOne({ email, password: passwordHash, idProfil: { nom: role } });
-    if (!user) {
+    // const passwordHash = await this.hashPassword(password);
+    const profil = await ProfilRepository.findByName(role);
+    const user = await userModel.findOne({ email, idProfil: profil._id }).populate('idProfil');
+    const isPasswordValid = user ? await this.comparePassword(password, user.password) : false;
+    if (!user || !isPasswordValid) {
       throw new Error('Email ou mot de passe incorrect');
     } 
-
+    const token = await this.generateToken(user)
+    const refreshToken = await this.generateRefreshToken(user)
     return {
-        accessToken: this.generateToken(user),
-        refreshToken: this.generateRefreshToken(user)
+        accessToken: token,
+        refreshToken: refreshToken,
+        user: user
     }
   }
 
+  static async logout() {
+    // Invalidate the refresh token (implementation depends on how you store tokens)
+  }
+  
   static async register(email, username, password, role) {
     const passwordHash = await this.hashPassword(password);
     const profil = await ProfilRepository.findByName(role);
@@ -27,10 +36,11 @@ class AuthService {
         idProfil: profil._id
     });
     await newUser.save();
+    const populatedUser = await userModel.findOne({ _id: newUser._id }).populate('idProfil');
     return {
-            user: newUser,
-            accessToken: this.generateToken(newUser),
-            refreshToken: this.generateRefreshToken(newUser)
+            user: populatedUser,
+            accessToken: this.generateToken(populatedUser),
+            refreshToken: this.generateRefreshToken(populatedUser)
     };
   }
 
@@ -53,6 +63,10 @@ class AuthService {
 
   static async hashPassword(password) {
     return  await bcrypt.hash(password, 12);
+  }
+
+  static async comparePassword(password, hash) {
+    return await bcrypt.compare(password, hash);
   }
 
   static async generateToken(user) {
