@@ -22,7 +22,7 @@ jobs:
       # 3️⃣ Déployer via SSH
       - name: Deploy on Droplet
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.DO_USER }}@${{ secrets.DO_HOST }} "
+          ssh -o StrictHostKeyChecking=no ${{ secrets.DO_USER }}@${{ secrets.DO_HOST }} '
           # Si le dossier n'existe pas, cloner le repo
           if [ ! -d '${{ secrets.APP_DIR }}/.git' ]; then
             git clone ${{ secrets.REPO_URL }} ${{ secrets.APP_DIR }};
@@ -40,4 +40,4 @@ jobs:
           export JWT_SECRETS='"${{ secrets.JWT_SECRETS }}"';
           export JWT_REFRESH_SECRETS='"${{ secrets.JWT_REFRESH_SECRETS }}"';
           docker-compose up -d --build;
-          "
+          '
