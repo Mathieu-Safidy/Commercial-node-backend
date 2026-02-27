@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const commandeDetailController = require("../controllers/CommandeDetailController");
+const commandeDetailController = require("../controllers/commandeDetailController");
 
 // Récupérer tous les détails de commandes
 router.get("/", commandeDetailController.getDetails);
