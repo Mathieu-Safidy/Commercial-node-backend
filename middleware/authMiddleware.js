@@ -25,6 +25,9 @@ const authMiddleware = async (req, res, next) => {
         req.user = user;
         next();
     } catch (err) {
+        if (err.name === 'TokenExpiredError') {
+            return res.status(401).json({ message: 'Session expired' });
+        }
         console.error('JWT Error:', err.message);
         return res.status(403).json({ message: 'Token invalide ou expiré' });
     }
