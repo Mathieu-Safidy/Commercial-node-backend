@@ -1,8 +1,11 @@
 const jwt = require('jsonwebtoken');
 const userService = require('../services/userService');
+const {decode} = require("jsonwebtoken");
+
 
 const authMiddleware = async (req, res, next) => {
     const authHeader = req.headers['authorization'];
+    console.log('Auth', authHeader);
     if (!authHeader) {
         return res.status(401).json({ message: 'Authorization header missing' });
     }
@@ -11,8 +14,10 @@ const authMiddleware = async (req, res, next) => {
         return res.status(401).json({ message: 'Aucune autorisation' });
     }
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        console.log('Secretes', process.env.JWT_SECRETS)
+        const decoded = jwt.verify(token, process.env.JWT_SECRETS);
         // Récupère l'utilisateur (attention : si getUserById est async → il faut await)
+        console.log(decoded)
         const user = await userService.getUserById(decoded.userId);
         if (!user) {
             return res.status(401).json({ message: 'Utilisateur non trouvé' });

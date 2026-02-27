@@ -14,11 +14,12 @@ class AuthController {
 
     static async register(req, res) {
         try {
-            const { email, username, password, role = 'Boutique' } = req.body;
+            const { email, username, password, role = 'User' } = req.body;
             const newUser = await AuthService.register(email, username, password, role);
             res.cookie("refreshToken", newUser.refreshToken, { httpOnly: true, secure: process.env.NODE_ENV ? (process.env.NODE_ENV === 'production') : true, sameSite: 'lax' });
             res.status(201).json({user: newUser.user, accessToken: newUser.accessToken});
         } catch (error) {
+            console.log(error) ;
             res.status(500).json({ message: error.message });
         }
     }

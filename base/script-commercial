@@ -68,6 +68,24 @@ db.createCollection("boutique", {
         }
     }
 })
+db.createCollection("detailBoutique", {
+    validator: {
+        $jsonSchema: {
+            bsonType: "object",
+            properties: {
+                idBoutique: { bsonType: "objectId" },
+                description: { bsonType : "string" },
+                email : { bsonType: "string" },
+                adresse : { bsonType: "string" },
+                telephone : { bsonType: "string" } ,
+                descriptionHoraire : { bsonType : "string" },
+                noteMoyen : { bsonType: ["double","int"] } ,
+                image : { bsonType: "string" },
+                status : { bsonType: "int" }
+            }
+        }
+    }
+})
 
 db.createCollection("categorie", {
      validator: {

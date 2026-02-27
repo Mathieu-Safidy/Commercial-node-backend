@@ -1,5 +1,5 @@
-const commandeRepo = require('../repositories/commandeRepositorie');
-const commandeDetailRepo = require('../repositories/commandeDetailRepositorie');
+const commandeRepo = require('../repositories/commandeRepository');
+const commandeDetailRepo = require('../repositories/commandeDetailRepository');
 const commandeDetailService = require('../services/commandeDetailService');
 const panierService = require('../services/panierService') ;
 const panierDetailService = require('../services/panierDetailService');
