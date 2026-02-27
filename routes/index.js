@@ -10,33 +10,26 @@ const panierRouter = require("./panierRouter") ;
 const produitRouter = require("./produitRoute") ;
 const categorieRouter = require("./categorieRoute") ;
 const authRouter = require('./authRoute');
+const detailBoutiqueRouter = require('./detailBoutiqueRoute') ;
 
 router.use('/auth', authRouter) ;
-
 router.use('/produits', produitRouter) ;
+router.use('/boxes', boxRouter);
 
-var commandeRouter = require("./commandeRoute");
-var commandeDetailRouter = require("./commandeDetailRoute");
-var locationRouter = require("./locationRoute");
-var detailLocationRouter = require("./detailLocationRoute") ;
-var boxRouter = require("./boxRoute") ;
+const { authMiddleware } = require('../middleware/authMiddleware') ;
+router.use(authMiddleware);
+
 router.use('/commandes', commandeRouter);
 router.use('/commandeDetails', commandeDetailRouter);
 router.use('/locations', locationRouter);
 router.use('/detailLocations', detailLocationRouter);
-router.use('/boxes', boxRouter);
-
-
-var stockRouter = require("./stockRoute") ;
-var panierRouter = require("./panierRouter") ;
-var produitRouter = require("./produitRoute") ;
-var categorieRouter = require("./categorieRoute") ;
 
 router.use('/categories', categorieRouter) ;
 router.use('/commandes' , commandeRouter) ;
 router.use('/commandeDetails' , commandeDetailRouter) ;
 router.use('/paniers' , panierRouter) ;
 router.use('/stocks', stockRouter) ;
+router.use('/detailBoutique', detailBoutiqueRouter) ;
 
 
 
