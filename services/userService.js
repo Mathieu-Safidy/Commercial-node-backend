@@ -9,7 +9,7 @@ class UserService {
         return await userRepo.findAll();
     }
 
-    static async getUserById(id) {
+    async getUserById(id) {
         return await userRepo.findById(id);
     }
 

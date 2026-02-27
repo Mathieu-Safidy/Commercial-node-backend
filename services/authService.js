@@ -2,14 +2,14 @@ const userModel = require('../models/userModel')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 const ProfilRepository = require('../repositories/profilRepository');
-const dotenv = require('dotenv');
-dotenv.config();
+
 class AuthService {
   static async login(email, password, role) {
     // const passwordHash = await this.hashPassword(password);
     const profil = await ProfilRepository.findByName(role);
     const user = await userModel.findOne({ email, idProfil: profil._id }).populate('idProfil');
     const isPasswordValid = user ? await this.comparePassword(password, user.password) : false;
+      console.log(user, isPasswordValid)
     if (!user || !isPasswordValid) {
       throw new Error('Email ou mot de passe incorrect');
     } 
@@ -39,8 +39,8 @@ class AuthService {
     const populatedUser = await userModel.findOne({ _id: newUser._id }).populate('idProfil');
     return {
             user: populatedUser,
-            accessToken: this.generateToken(populatedUser),
-            refreshToken: this.generateRefreshToken(populatedUser)
+            accessToken: await this.generateToken(populatedUser),
+            refreshToken: await this.generateRefreshToken(populatedUser)
     };
   }
 

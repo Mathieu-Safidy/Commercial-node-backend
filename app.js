@@ -6,7 +6,8 @@ var cors = require('cors');
 const { engine } = require('express-handlebars');
 var indexRouter = require('./routes/index');
 var app = express();
-
+const dotenv = require('dotenv');
+dotenv.config();
 app.engine('handlebars', engine({
   defaultLayout: 'main', // layout principal
   layoutsDir: path.join(__dirname, 'views/layouts'),
