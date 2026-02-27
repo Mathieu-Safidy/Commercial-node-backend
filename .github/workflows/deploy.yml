@@ -23,7 +23,7 @@ jobs:
       - name: Deploy on Droplet
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.DO_USER }}@${{ secrets.DO_HOST }} << 'ENDSSH'
-            set -x   # debug : montre chaque commande
+            set -x
 
             APP_DIR="${{ secrets.APP_DIR }}"
 
@@ -38,29 +38,27 @@ jobs:
             echo "→ Arrêt des containers (si existants)"
             docker compose down || true
 
-            echo "→ Création .env.deploy (protégé)"
-            cat > .env.deploy << 'ENDENV'
-            JWT_SECRETS=${{ secrets.JWT_SECRETS }}
-            JWT_REFRESH_SECRETS=${{ secrets.JWT_REFRESH_SECRETS }}
-            ENDENV
+            echo "→ Création .env.deploy sans heredoc"
+            echo "JWT_SECRETS=${{ secrets.JWT_SECRETS }}" > .env.deploy
+            echo "JWT_REFRESH_SECRETS=${{ secrets.JWT_REFRESH_SECRETS }}" >> .env.deploy
 
-            echo "→ Contenu masqué de .env.deploy :"
-            cat .env.deploy | sed 's/./*/g' || echo "Fichier vide ?"
+            echo "→ Contenu masqué du fichier env :"
+            cat .env.deploy | sed 's/./*/g' || echo "(fichier vide ou erreur)"
 
             echo "→ Lancement du déploiement"
-            docker compose up -d --build --force-recreate \
-              --env-file .env.deploy \
+            docker compose up -d --build --force-recreate --env-file .env.deploy \
               2>&1 | tee docker-up.log
 
-            rm -f .env.deploy .docker-up.log  # nettoyage
+            rm -f .env.deploy docker-up.log
 
-            echo "→ Logs du up :"
-            cat docker-up.log || echo "Aucun log"
+            echo "→ Logs du déploiement :"
+            cat docker-up.log || echo "Pas de logs disponibles"
 
             echo "→ Vérification des variables dans le container"
-            # Remplace 'api' par le vrai nom de ton service (regarde docker compose ps)
-            docker compose exec api env | grep -i jwt || echo "Aucune variable JWT trouvée → vérifie le service name ou docker-compose.yml"
+            # Change 'api' par le vrai nom de service (ex: backend, commercial-api, node-app...)
+            # Trouve-le avec : docker compose ps
+            docker compose exec api env | grep -i jwt || echo "Variables JWT non trouvées (vérifie nom service + docker-compose.yml)"
 
-            echo "→ État des containers"
+            echo "→ État final des containers"
             docker ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}"
           ENDSSH
