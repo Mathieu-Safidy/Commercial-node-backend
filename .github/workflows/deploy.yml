@@ -28,11 +28,12 @@ jobs:
             git clone ${{ secrets.REPO_URL }} ${{ secrets.APP_DIR }};
           else
             cd ${{ secrets.APP_DIR }};
-            git pull origin deploiment;
+            git pull origin ${{ secrets.BRANCH }};
           fi
 
           # Aller dans le dossier
           cd ${{ secrets.APP_DIR }};
+          git checkout ${{ secrets.BRANCH }};
 
           # Relancer les containers Docker Compose
           docker-compose down;
