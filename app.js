@@ -8,6 +8,9 @@ var indexRouter = require('./routes/index');
 var app = express();
 const dotenv = require('dotenv');
 dotenv.config();
+console.log('token expiry ', process.env.ACCESS_TOKEN_EXPIRY);
+console.log('refresh expiry ', process.env.REFRESH_TOKEN_EXPIRY);
+
 app.engine('handlebars', engine({
   defaultLayout: 'main', // layout principal
   layoutsDir: path.join(__dirname, 'views/layouts'),
