@@ -20,8 +20,6 @@ services:
     image: mongo:7
     container_name: commercial-mongodb
     restart: unless-stopped
-    ports:
-      - "27017:27017"
     volumes:
       - /home/project/mongo-data:/data/db
     networks:
