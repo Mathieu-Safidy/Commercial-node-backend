@@ -40,9 +40,9 @@ jobs:
 
             echo "→ Création .env.deploy (protégé)"
             cat > .env.deploy << 'ENDENV'
-JWT_SECRETS=${{ secrets.JWT_SECRETS }}
-JWT_REFRESH_SECRETS=${{ secrets.JWT_REFRESH_SECRETS }}
-ENDENV
+            JWT_SECRETS=${{ secrets.JWT_SECRETS }}
+            JWT_REFRESH_SECRETS=${{ secrets.JWT_REFRESH_SECRETS }}
+            ENDENV
 
             echo "→ Contenu masqué de .env.deploy :"
             cat .env.deploy | sed 's/./*/g' || echo "Fichier vide ?"
