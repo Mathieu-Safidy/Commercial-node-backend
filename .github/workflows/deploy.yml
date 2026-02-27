@@ -26,11 +26,23 @@ jobs:
             set -x
 
             APP_DIR="${{ secrets.APP_DIR }}"
+            REPO_URL="${{ secrets.REPO_URL }}"
+            BRANCH="deploiment"  # ou le nom de ta branche
 
-            if ! cd "$APP_DIR"; then
-              echo "ERREUR : impossible de cd dans $APP_DIR"
-              exit 1
+            # Crée le dossier si inexistant
+            mkdir -p "$APP_DIR"
+
+            if [ ! -d "$APP_DIR/.git" ]; then
+              echo "→ Clonage du repo"
+              git clone -b "$BRANCH" "$REPO_URL" "$APP_DIR"
+            else
+              echo "→ Pull des derniers changements"
+              cd "$APP_DIR"
+              git fetch origin "$BRANCH"
+              git reset --hard "origin/$BRANCH"
             fi
+
+            cd "$APP_DIR"
 
             pwd
             git status
