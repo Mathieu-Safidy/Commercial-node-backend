@@ -35,6 +35,20 @@ class ProduitController {
         }
     }
 
+    static async getProduitById(req, res) {
+        try {
+            const id = req.params.id;
+            const produit = await ProduitService.getProduitById(id);
+            if (!produit) {
+                return res.status(404).json({ message: "Produit not found" });
+            }
+            res.status(200).json(produit);
+        }
+        catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+
     static updateProduit = async (req, res) => {
         try {
             const id = req.params.id;

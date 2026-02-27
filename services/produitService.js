@@ -28,6 +28,18 @@ class ProduitService {
         const updatedProduit = await ProduitRepository.updateProduit(id, produitData);
         return updatedProduit;
     }
+
+    static getProduitById = async (id) => {
+        const produit = await ProduitRepository.getProduitById(id);
+        if (!produit) {
+            return null;
+        }
+        let rest = { ...produit.toObject() };
+        const lastStock = await StockRepository.findLastStockByProduit(produit._id);
+        rest.quantiteDisponible = lastStock ? lastStock.quantiteDisponible ?? 0 : 0;
+        rest.boutique = await BoutiqueRepository.getBoutiqueById(produit.idBoutique);
+        return rest;
+    }
 }
 
 module.exports = ProduitService;

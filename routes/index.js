@@ -11,7 +11,9 @@ const produitRouter = require("./produitRoute") ;
 const categorieRouter = require("./categorieRoute") ;
 const authRouter = require('./authRoute');
 const detailBoutiqueRouter = require('./detailBoutiqueRoute') ;
+const noteRouter = require('./noteRoute') ;
 
+router.use('/notes', noteRouter) ;
 router.use('/auth', authRouter) ;
 router.use('/produits', produitRouter) ;
 router.use('/boxes', boxRouter);
