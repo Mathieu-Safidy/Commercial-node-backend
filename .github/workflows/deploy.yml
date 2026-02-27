@@ -22,22 +22,30 @@ jobs:
       # 3️⃣ Déployer via SSH
       - name: Deploy on Droplet
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.DO_USER }}@${{ secrets.DO_HOST }} '
-          # Si le dossier n'existe pas, cloner le repo
-          if [ ! -d '${{ secrets.APP_DIR }}/.git' ]; then
-            git clone ${{ secrets.REPO_URL }} ${{ secrets.APP_DIR }};
-          else
-            cd ${{ secrets.APP_DIR }};
-            git pull origin deploiment;
-          fi
+          ssh -o StrictHostKeyChecking=no $$   {{ secrets.DO_USER }}@   $${{ secrets.DO_HOST }} '
+            set -x   # ← affiche chaque commande exécutée
 
-          # Aller dans le dossier
-          cd ${{ secrets.APP_DIR }};
-          
+            APP_DIR="${{ secrets.APP_DIR }}"
 
-          # Relancer les containers Docker Compose
-          docker-compose down;
-          export JWT_SECRETS='"${{ secrets.JWT_SECRETS }}"';
-          export JWT_REFRESH_SECRETS='"${{ secrets.JWT_REFRESH_SECRETS }}"';
-          docker-compose up -d --build;
+            cd "$APP_DIR" || { echo "ERREUR : impossible d'aller dans $APP_DIR"; exit 1; }
+            pwd
+            git status
+
+            echo "→ Arrêt des containers..."
+            docker compose down --verbose || echo "docker compose down a retourné $? (code erreur)"
+
+            echo "→ Variables d'environnement :"
+            echo "JWT_SECRETS=${JWT_SECRETS:-(non défini)}"
+            echo "JWT_REFRESH_SECRETS=${JWT_REFRESH_SECRETS:-(non défini)}"
+
+            echo "→ Lancement du build & up..."
+            JWT_SECRETS="${{ secrets.JWT_SECRETS }}" \
+            JWT_REFRESH_SECRETS="${{ secrets.JWT_REFRESH_SECRETS }}" \
+              docker compose up -d --build --force-recreate 2>&1 | tee build.log
+
+            echo "→ Contenu de build.log :"
+            cat build.log || echo "Pas de log disponible"
+
+            echo "→ docker ps :"
+            docker ps -a
           '
