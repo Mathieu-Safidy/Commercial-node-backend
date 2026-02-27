@@ -11,7 +11,7 @@ const produitRouter = require("./produitRoute") ;
 const categorieRouter = require("./categorieRoute") ;
 const authRouter = require('./authRoute');
 const detailBoutiqueRouter = require('./detailBoutiqueRoute') ;
-const noteRouter = require('./noteRoute') ;
+const promotionRouter = require('./promotionRoute') ;
 
 router.use('/notes', noteRouter) ;
 router.use('/auth', authRouter) ;
@@ -32,6 +32,7 @@ router.use('/commandeDetails' , commandeDetailRouter) ;
 router.use('/paniers' , panierRouter) ;
 router.use('/stocks', stockRouter) ;
 router.use('/detailBoutique', detailBoutiqueRouter) ;
+router.use('/promotions', promotionRouter) ;
 
 
 

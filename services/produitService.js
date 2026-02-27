@@ -1,6 +1,8 @@
+const promotionModel = require("../models/promotionModel");
 const BoutiqueRepository = require("../repositories/boutiqueRepository");
 const ProduitRepository = require("../repositories/produitRepository");
 const StockRepository = require("../repositories/stockRepository");
+const promotionService = require("./promotionService");
 
 class ProduitService {
     static getAllProduits = async () => {
@@ -13,7 +15,11 @@ class ProduitService {
                 rest.quantiteDisponible = lastStock ? lastStock.quantiteDisponible ?? 0 : 0;
                 
                 rest.boutique = await BoutiqueRepository.getBoutiqueById(produit.idBoutique);
+                let promotion = await promotionService.getPromotionByProduitRecent(produit._id);
+                // let promotionItem = promotionModel.create(promotion);
+                rest.reduction = promotion ? (promotion.reduction ? promotion.reduction : 0) : 0;
                 return rest;
+             
             })
         );
         return produits;
@@ -28,17 +34,9 @@ class ProduitService {
         const updatedProduit = await ProduitRepository.updateProduit(id, produitData);
         return updatedProduit;
     }
-
     static getProduitById = async (id) => {
         const produit = await ProduitRepository.getProduitById(id);
-        if (!produit) {
-            return null;
-        }
-        let rest = { ...produit.toObject() };
-        const lastStock = await StockRepository.findLastStockByProduit(produit._id);
-        rest.quantiteDisponible = lastStock ? lastStock.quantiteDisponible ?? 0 : 0;
-        rest.boutique = await BoutiqueRepository.getBoutiqueById(produit.idBoutique);
-        return rest;
+        return produit;
     }
 }
 
