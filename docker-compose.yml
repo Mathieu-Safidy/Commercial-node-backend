@@ -7,6 +7,8 @@ services:
     restart: unless-stopped
     environment:
       - MONGO_URL=mongodb://mongodb:27017/commercialdb
+      - JWT_SECRETS=${JWT_SECRETS}
+      - JWT_REFRESH_SECRETS=${JWT_REFRESH_SECRETS}
     ports:
       - "3000:3000"
     depends_on:

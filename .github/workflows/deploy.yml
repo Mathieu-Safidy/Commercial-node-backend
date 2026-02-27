@@ -28,14 +28,16 @@ jobs:
             git clone ${{ secrets.REPO_URL }} ${{ secrets.APP_DIR }};
           else
             cd ${{ secrets.APP_DIR }};
-            git pull origin ${{ secrets.BRANCH }};
+            git pull origin deploiment;
           fi
 
           # Aller dans le dossier
           cd ${{ secrets.APP_DIR }};
-          git checkout ${{ secrets.BRANCH }};
+          
 
           # Relancer les containers Docker Compose
           docker-compose down;
+          JWT_SECRETS='${{ secrets.JWT_SECRETS }}' \
+          JWT_REFRESH_SECRETS='${{ secrets.JWT_REFRESH_SECRETS }}' \
           docker-compose up -d --build;
           "
