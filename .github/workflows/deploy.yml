@@ -38,27 +38,19 @@ jobs:
             echo "→ Arrêt des containers (si existants)"
             docker compose down || true
 
-            echo "→ Création .env.deploy sans heredoc"
-            echo "JWT_SECRETS=${{ secrets.JWT_SECRETS }}" > .env.deploy
-            echo "JWT_REFRESH_SECRETS=${{ secrets.JWT_REFRESH_SECRETS }}" >> .env.deploy
-
-            echo "→ Contenu masqué du fichier env :"
-            cat .env.deploy | sed 's/./*/g' || echo "(fichier vide ou erreur)"
+            echo "→ Création temporaire du fichier .env"
+            echo "JWT_SECRETS=${{ secrets.JWT_SECRETS }}" > .env
+            echo "JWT_REFRESH_SECRETS=${{ secrets.JWT_REFRESH_SECRETS }}" >> .env
 
             echo "→ Lancement du déploiement"
-            docker compose up -d --build --force-recreate --env-file .env.deploy \
-              2>&1 | tee docker-up.log
-
-            rm -f .env.deploy docker-up.log
-
-            echo "→ Logs du déploiement :"
-            cat docker-up.log || echo "Pas de logs disponibles"
+            docker compose up -d --build --force-recreate 2>&1 | tee docker-up.log
 
             echo "→ Vérification des variables dans le container"
-            # Change 'api' par le vrai nom de service (ex: backend, commercial-api, node-app...)
-            # Trouve-le avec : docker compose ps
-            docker compose exec api env | grep -i jwt || echo "Variables JWT non trouvées (vérifie nom service + docker-compose.yml)"
+            docker compose exec api env | grep -i jwt || echo "Variables JWT non trouvées"
 
             echo "→ État final des containers"
             docker ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}"
+
+            echo "→ Suppression du fichier .env temporaire"
+            rm -f .env docker-up.log
           ENDSSH
