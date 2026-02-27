@@ -9,12 +9,13 @@ var commandeDetailRouter = require("./commandeDetailRoute");
 var locationRouter = require("./locationRoute");
 var detailLocationRouter = require("./detailLocationRoute") ;
 var boxRouter = require("./boxRoute") ;
+var detailBoutiqueRoute = require("./detailBoutiqueRoute") ;
 router.use('/commandes', commandeRouter);
 router.use('/commandeDetails', commandeDetailRouter);
 router.use('/locations', locationRouter);
 router.use('/detailLocations', detailLocationRouter);
 router.use('/boxes', boxRouter);
-
+router.use('/detailBoutique', detailBoutiqueRoute);
 
 var stockRouter = require("./stockRoute") ;
 var panierRouter = require("./panierRouter") ;

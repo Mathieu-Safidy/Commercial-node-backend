@@ -1,4 +1,4 @@
-const commandeDetailRepo = require('../repositories/commandeDetailRepositorie');
+const commandeDetailRepo = require('../repositories/commandeDetailRepository');
 
 class CommandeDetailService {
     async createDetail(data) {
