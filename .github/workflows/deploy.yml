@@ -33,7 +33,7 @@ jobs:
             cat > .env.deploy << EOF
             JWT_SECRETS=${{ secrets.JWT_SECRETS }}
             JWT_REFRESH_SECRETS=${{ secrets.JWT_REFRESH_SECRETS }}
-            # Ajoute d'autres si besoin (attention aux caractères spéciaux)
+            # Ajoute d'autres si besoin
             EOF
 
             # Lance avec --env-file
@@ -41,13 +41,13 @@ jobs:
               --env-file .env.deploy \
               2>&1 | tee docker-up.log
 
-            # Nettoie immédiatement (sécurité)
+            # Nettoie immédiatement
             rm -f .env.deploy
 
             echo "→ Logs du déploiement :"
             cat docker-up.log
 
-            echo "→ Vérif dans le container (remplace 'api' par ton service name)"
+            echo "→ Vérif dans le container"
             docker compose exec api env | grep -E "JWT_SECRETS|JWT_REFRESH_SECRETS" || echo "Variables non visibles ? Vérifie docker-compose.yml"
             docker ps -a
           '
