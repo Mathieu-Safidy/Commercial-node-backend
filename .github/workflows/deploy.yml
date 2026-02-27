@@ -22,23 +22,32 @@ jobs:
       # 3️⃣ Déployer via SSH
       - name: Deploy on Droplet
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.DO_USER }}@${{ secrets.DO_HOST }} "
-          # Si le dossier n'existe pas, cloner le repo
-          if [ ! -d '${{ secrets.APP_DIR }}/.git' ]; then
-            git clone ${{ secrets.REPO_URL }} ${{ secrets.APP_DIR }};
-          else
-            cd ${{ secrets.APP_DIR }};
-            git pull origin deploiment;
-          fi
+          ssh -o StrictHostKeyChecking=no ${{ secrets.DO_USER }}@${{ secrets.DO_HOST }} '
+            cd "${{ secrets.APP_DIR }}" || { echo "Erreur cd"; exit 1; }
 
-          # Aller dans le dossier
-          cd ${{ secrets.APP_DIR }};
-          
+            git pull origin deploiment || true   # ou ta branche
 
-          # Relancer les containers Docker Compose
-          docker-compose down;
-          docker compose up -d --build \
-          --env JWT_SECRETS="${{ secrets.JWT_SECRETS }}" \
-          --env JWT_REFRESH_SECRETS="${{ secrets.JWT_REFRESH_SECRETS }}" \
-          2>&1 | tee docker-up.log
-          "
+            docker compose down || true
+
+            # Crée un fichier .env temporaire avec tes secrets
+            cat > .env.deploy << EOF
+            JWT_SECRETS=${{ secrets.JWT_SECRETS }}
+            JWT_REFRESH_SECRETS=${{ secrets.JWT_REFRESH_SECRETS }}
+            # Ajoute d'autres si besoin (attention aux caractères spéciaux)
+            EOF
+
+            # Lance avec --env-file
+            docker compose up -d --build --force-recreate \
+              --env-file .env.deploy \
+              2>&1 | tee docker-up.log
+
+            # Nettoie immédiatement (sécurité)
+            rm -f .env.deploy
+
+            echo "→ Logs du déploiement :"
+            cat docker-up.log
+
+            echo "→ Vérif dans le container (remplace 'api' par ton service name)"
+            docker compose exec api env | grep -E "JWT_SECRETS|JWT_REFRESH_SECRETS" || echo "Variables non visibles ? Vérifie docker-compose.yml"
+            docker ps -a
+          '
