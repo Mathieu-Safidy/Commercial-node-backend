@@ -22,32 +22,45 @@ jobs:
       # 3️⃣ Déployer via SSH
       - name: Deploy on Droplet
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.DO_USER }}@${{ secrets.DO_HOST }} '
-            cd "${{ secrets.APP_DIR }}" || { echo "Erreur cd"; exit 1; }
+          ssh -o StrictHostKeyChecking=no ${{ secrets.DO_USER }}@${{ secrets.DO_HOST }} << 'ENDSSH'
+            set -x   # debug : montre chaque commande
 
-            git pull origin deploiment || true   # ou ta branche
+            APP_DIR="${{ secrets.APP_DIR }}"
 
+            if ! cd "$APP_DIR"; then
+              echo "ERREUR : impossible de cd dans $APP_DIR"
+              exit 1
+            fi
+
+            pwd
+            git status
+
+            echo "→ Arrêt des containers (si existants)"
             docker compose down || true
 
-            # Crée un fichier .env temporaire avec tes secrets
-            cat > .env.deploy << EOF
-            JWT_SECRETS=${{ secrets.JWT_SECRETS }}
-            JWT_REFRESH_SECRETS=${{ secrets.JWT_REFRESH_SECRETS }}
-            # Ajoute d'autres si besoin
-            EOF
+            echo "→ Création .env.deploy (protégé)"
+            cat > .env.deploy << 'ENDENV'
+JWT_SECRETS=${{ secrets.JWT_SECRETS }}
+JWT_REFRESH_SECRETS=${{ secrets.JWT_REFRESH_SECRETS }}
+ENDENV
 
-            # Lance avec --env-file
+            echo "→ Contenu masqué de .env.deploy :"
+            cat .env.deploy | sed 's/./*/g' || echo "Fichier vide ?"
+
+            echo "→ Lancement du déploiement"
             docker compose up -d --build --force-recreate \
               --env-file .env.deploy \
               2>&1 | tee docker-up.log
 
-            # Nettoie immédiatement
-            rm -f .env.deploy
+            rm -f .env.deploy .docker-up.log  # nettoyage
 
-            echo "→ Logs du déploiement :"
-            cat docker-up.log
+            echo "→ Logs du up :"
+            cat docker-up.log || echo "Aucun log"
 
-            echo "→ Vérif dans le container"
-            docker compose exec api env | grep -E "JWT_SECRETS|JWT_REFRESH_SECRETS" || echo "Variables non visibles ? Vérifie docker-compose.yml"
-            docker ps -a
-          '
+            echo "→ Vérification des variables dans le container"
+            # Remplace 'api' par le vrai nom de ton service (regarde docker compose ps)
+            docker compose exec api env | grep -i jwt || echo "Aucune variable JWT trouvée → vérifie le service name ou docker-compose.yml"
+
+            echo "→ État des containers"
+            docker ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}"
+          ENDSSH
