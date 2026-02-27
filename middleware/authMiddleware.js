@@ -39,7 +39,9 @@ const authMiddleware = async (req, res, next) => {
 
 const restrictedTo = (...roles) => {
     return (req, res, next) => {
-        if (!roles.includes(req.user.idProfil.nom)) {
+        console.log('User restrict ', req.user, roles);
+        
+        if (!req.user.idProfil.nom.includes(roles)) {
             return res.status(403).json({ message: 'Accès refusé' });   
         }
         next();
