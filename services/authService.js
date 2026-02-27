@@ -7,6 +7,7 @@ class AuthService {
   static async login(email, password, role) {
     // const passwordHash = await this.hashPassword(password);
     const profil = await ProfilRepository.findByName(role);
+    console.log('profil ', profil);
     const user = await userModel.findOne({ email, idProfil: profil._id }).populate('idProfil');
     const isPasswordValid = user ? await this.comparePassword(password, user.password) : false;
       console.log(user, isPasswordValid)
@@ -47,13 +48,18 @@ class AuthService {
   static async refreshToken(refreshToken) {
         try {
         const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRETS);
+        console.log("decode ", decoded);
+        
             const user = await userModel.findById(decoded.userId).populate('idProfil');
+            console.log('User', user);
+            
             if (!user) {
                 throw new Error('Utilisateur non trouvé');
             }
             return {
-                accessToken: this.generateToken(user),
-                refreshToken: this.generateRefreshToken(user)
+                accessToken: await this.generateToken(user),
+                refreshToken: await this.generateRefreshToken(user),
+                user: user
             }
         }
         catch (err) {
