@@ -1,0 +1,83 @@
+const userModel = require('../models/userModel')
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken');
+const ProfilRepository = require('../repositories/profilRepository');
+const dotenv = require('dotenv');
+dotenv.config();
+class AuthService {
+  static async login(email, password, role) {
+    // const passwordHash = await this.hashPassword(password);
+    const profil = await ProfilRepository.findByName(role);
+    const user = await userModel.findOne({ email, idProfil: profil._id }).populate('idProfil');
+    const isPasswordValid = user ? await this.comparePassword(password, user.password) : false;
+    if (!user || !isPasswordValid) {
+      throw new Error('Email ou mot de passe incorrect');
+    } 
+    const token = await this.generateToken(user)
+    const refreshToken = await this.generateRefreshToken(user)
+    return {
+        accessToken: token,
+        refreshToken: refreshToken,
+        user: user
+    }
+  }
+
+  static async logout() {
+    // Invalidate the refresh token (implementation depends on how you store tokens)
+  }
+  
+  static async register(email, username, password, role) {
+    const passwordHash = await this.hashPassword(password);
+    const profil = await ProfilRepository.findByName(role);
+    const newUser = new userModel({
+        email,
+        username,
+        password: passwordHash,
+        idProfil: profil._id
+    });
+    await newUser.save();
+    const populatedUser = await userModel.findOne({ _id: newUser._id }).populate('idProfil');
+    return {
+            user: populatedUser,
+            accessToken: this.generateToken(populatedUser),
+            refreshToken: this.generateRefreshToken(populatedUser)
+    };
+  }
+
+  static async refreshToken(refreshToken) {
+        try {
+        const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRETS);
+            const user = await userModel.findById(decoded.userId).populate('idProfil');
+            if (!user) {
+                throw new Error('Utilisateur non trouvé');
+            }
+            return {
+                accessToken: this.generateToken(user),
+                refreshToken: this.generateRefreshToken(user)
+            }
+        }
+        catch (err) {
+            throw new Error('Token de rafraîchissement invalide: ' , err.message);
+        }
+    }
+
+  static async hashPassword(password) {
+    return  await bcrypt.hash(password, 12);
+  }
+
+  static async comparePassword(password, hash) {
+    return await bcrypt.compare(password, hash);
+  }
+
+  static async generateToken(user) {
+    const accessToken = jwt.sign({ userId: user._id, role: user.idProfil.nom }, process.env.JWT_SECRETS, { expiresIn: process.env.ACCESS_TOKEN_EXPIRY });
+   return accessToken;
+  }
+
+  static async generateRefreshToken(user) {
+    const refreshToken = jwt.sign({ userId: user._id, role: user.idProfil.nom }, process.env.JWT_REFRESH_SECRETS, { expiresIn: process.env.REFRESH_TOKEN_EXPIRY });
+    return refreshToken;
+  }
+}
+
+module.exports = AuthService;

@@ -1,4 +1,6 @@
 const router = require('express').Router();
+const ProduitController = require('../controllers/produitController');
+var {authMiddleware , restrictedTo} = require('../middleware/authMiddleware') ;
 const multer = require('multer');
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -10,9 +12,12 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-const ProduitController = require('../controllers/produitController');
+router.get('/', ProduitController.getAllProduits);
+
+router.use(authMiddleware);
+router.use(restrictedTo('Boutique'));
 
 router.patch('/:id', upload.single('image'), ProduitController.updateProduit);
-router.get('/', ProduitController.getAllProduits);
 router.post('/', upload.single('image'), ProduitController.saveProduit);
+
 module.exports = router;

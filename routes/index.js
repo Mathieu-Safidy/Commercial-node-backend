@@ -1,21 +1,31 @@
-var express = require('express');
-const ProduitController = require('../controllers/produitController');
-const LocationController = require('../controllers/locationController') ;
+const express = require('express');
+const router = express.Router();
+const commandeRouter = require("./commandeRoute");
+const commandeDetailRouter = require("./commandeDetailRoute");
+const locationRouter = require("./locationRoute");
+const detailLocationRouter = require("./detailLocationRoute") ;
+const boxRouter = require("./boxRoute") ;
+const stockRouter = require("./stockRoute") ;
+const panierRouter = require("./panierRouter") ;
+const produitRouter = require("./produitRoute") ;
+const categorieRouter = require("./categorieRoute") ;
+const authRouter = require('./authRoute');
 
-var router = express.Router();
+router.use('/auth', authRouter) ;
+
+router.use('/produits', produitRouter) ;
 
 var commandeRouter = require("./commandeRoute");
 var commandeDetailRouter = require("./commandeDetailRoute");
 var locationRouter = require("./locationRoute");
 var detailLocationRouter = require("./detailLocationRoute") ;
 var boxRouter = require("./boxRoute") ;
-var detailBoutiqueRoute = require("./detailBoutiqueRoute") ;
 router.use('/commandes', commandeRouter);
 router.use('/commandeDetails', commandeDetailRouter);
 router.use('/locations', locationRouter);
 router.use('/detailLocations', detailLocationRouter);
 router.use('/boxes', boxRouter);
-router.use('/detailBoutique', detailBoutiqueRoute);
+
 
 var stockRouter = require("./stockRoute") ;
 var panierRouter = require("./panierRouter") ;
@@ -27,8 +37,8 @@ router.use('/commandes' , commandeRouter) ;
 router.use('/commandeDetails' , commandeDetailRouter) ;
 router.use('/paniers' , panierRouter) ;
 router.use('/stocks', stockRouter) ;
-router.use('/produits', produitRouter) ;
-// router.get('/produits', ProduitController.getAllProduits);
+
+
 
 
 

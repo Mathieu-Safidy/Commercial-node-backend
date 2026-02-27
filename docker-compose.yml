@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  api:
+    build: .
+    container_name: commercial-api
+    restart: unless-stopped
+    environment:
+      - MONGO_URL=mongodb://mongodb:27017/commercialdb
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+    networks:
+      - commercial-network
+
+  mongodb:
+    image: mongo:7
+    container_name: commercial-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - /home/project/mongo-data:/data/db
+    networks:
+      - commercial-network
+
+volumes:
+  mongo-data:
+
+networks:
+  commercial-network:
+    external: true

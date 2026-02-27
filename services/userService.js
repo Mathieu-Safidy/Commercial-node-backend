@@ -2,27 +2,27 @@ const userRepo = require('../repositories/userRepositorie');
 
 class UserService {
     async createUser(data) {
-        return userRepo.create(data);
+        return await userRepo.create(data);
     }
 
     async getAllUsers() {
-        return userRepo.findAll();
+        return await userRepo.findAll();
     }
 
-    async getUserById(id) {
-        return userRepo.findById(id);
+    static async getUserById(id) {
+        return await userRepo.findById(id);
     }
 
     async getUserByEmail(email) {
-        return userRepo.findByEmail(email);
+        return await userRepo.findByEmail(email);
     }
 
     async updateUser(id, data) {
-        return userRepo.update(id, data);
+        return await userRepo.update(id, data);
     }
 
     async deleteUser(id) {
-        return userRepo.delete(id);
+        return await userRepo.delete(id);
     }
 }
 
