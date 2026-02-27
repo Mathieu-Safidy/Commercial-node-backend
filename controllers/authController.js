@@ -15,6 +15,8 @@ class AuthController {
     static async register(req, res) {
         try {
             const { email, username, password, role = 'User' } = req.body;
+            console.log('token expiry ', process.env.ACCESS_TOKEN_EXPIRY);
+            console.log('refresh expiry ', process.env.REFRESH_TOKEN_EXPIRY);
             const newUser = await AuthService.register(email, username, password, role);
             res.cookie("refreshToken", newUser.refreshToken, { httpOnly: true, secure: process.env.NODE_ENV ? (process.env.NODE_ENV === 'production') : true, sameSite: 'lax' });
             res.status(201).json({user: newUser.user, accessToken: newUser.accessToken});
