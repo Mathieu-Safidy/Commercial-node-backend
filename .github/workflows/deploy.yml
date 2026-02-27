@@ -27,7 +27,7 @@ jobs:
 
             APP_DIR="${{ secrets.APP_DIR }}"
             REPO_URL="${{ secrets.REPO_URL }}"
-            BRANCH="deploiment"  # ou le nom de ta branche
+            BRANCH="${{ secrets.BRANCH }}"
 
             # Crée le dossier si inexistant
             mkdir -p "$APP_DIR"
