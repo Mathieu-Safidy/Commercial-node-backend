@@ -6,7 +6,7 @@ services:
     container_name: commercial-api
     restart: unless-stopped
     environment:
-      - MONGO_URL=mongodb://mongodb:27017/commercialdb
+      - MONGO_URL=mongodb://mongodb:27017/commercial
       - REFRESH_TOKEN_EXPIRY=7d
       - ACCESS_TOKEN_EXPIRY=15m
     ports:

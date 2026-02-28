@@ -3,7 +3,7 @@ const AuthService = require("../services/authService");
 class AuthController {
     static async login(req, res) {
         try {
-            const { email, password, role = 'Boutique' } = req.body;
+            const { email, password, role = 'User' } = req.body;
             const tokens = await AuthService.login(email, password, role);
             res.cookie("refreshToken", tokens.refreshToken, { httpOnly: true, secure: process.env.NODE_ENV ? (process.env.NODE_ENV === 'production') : true, sameSite: 'lax' });
             res.status(200).json({accessToken: tokens.accessToken, user: tokens.user});
