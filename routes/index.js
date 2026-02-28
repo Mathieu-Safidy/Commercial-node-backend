@@ -13,6 +13,7 @@ const authRouter = require('./authRoute');
 const detailBoutiqueRouter = require('./detailBoutiqueRoute') ;
 const promotionRouter = require('./promotionRoute') ;
 const noteRouter = require('./noteRoute') ;
+const userRouter = require('./userRoute') ;
 
 router.use('/notes', noteRouter) ;
 router.use('/auth', authRouter) ;
@@ -34,7 +35,7 @@ router.use('/paniers' , panierRouter) ;
 router.use('/stocks', stockRouter) ;
 router.use('/detailBoutique', detailBoutiqueRouter) ;
 router.use('/promotions', promotionRouter) ;
-
+router.use('/users', userRouter) ;
 
 
 

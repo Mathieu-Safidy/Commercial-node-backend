@@ -4,6 +4,16 @@ class UserRepository {
     async create(data) {
         return User.create(data);
     }
+    async createSave(email, username, password, idProfil) {
+        const user = new User({
+                email,
+                username,
+                password,
+                idProfil  
+        });
+        return user.save();
+    }
+
 
     async findAll() {
         return User.find().populate('idProfil');
