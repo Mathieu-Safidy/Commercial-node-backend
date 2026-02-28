@@ -20,6 +20,8 @@
     "mongoose": "^9.1.5",
     "morgan": "^1.10.1",
     "multer": "^2.0.2",
+    "nodemailer": "^8.0.1",
+    "nodemailer-express-handlebars": "^7.0.0",
     "pug": "^3.0.3"
   },
   "keywords": [],

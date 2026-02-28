@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{subject}}</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f4f6f9;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: #333333;
+    }
+
+    .wrapper {
+      width: 100%;
+      padding: 40px 0;
+      background-color: #f4f6f9;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    /* ── HEADER ── */
+    .header {
+      background-color: #1a73e8;
+      padding: 32px 40px;
+      text-align: center;
+    }
+
+    .header h1 {
+      margin: 0;
+      color: #ffffff;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── BODY ── */
+    .body {
+      padding: 36px 40px;
+    }
+
+    .greeting {
+      font-size: 16px;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    /* ── INFO CARD ── */
+    .info-card {
+      background-color: #f8faff;
+      border: 1px solid #dce6f9;
+      border-radius: 6px;
+      padding: 24px 28px;
+      margin-bottom: 28px;
+    }
+
+    .info-row {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .info-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .info-label {
+      min-width: 140px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #666666;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      padding-top: 2px;
+    }
+
+    .info-value {
+      font-size: 15px;
+      color: #1a1a1a;
+      word-break: break-all;
+      flex: 1;
+    }
+
+    .info-value.password {
+      font-family: 'Courier New', monospace;
+      background-color: #eef2ff;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 14px;
+      letter-spacing: 1px;
+    }
+
+    .info-value.id {
+      font-family: 'Courier New', monospace;
+      color: #1a73e8;
+      font-size: 14px;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid #e8edf5;
+      margin: 20px 0;
+    }
+
+    /* ── NOTE ── */
+    .note {
+      background-color: #fff8e1;
+      border-left: 4px solid #f9a825;
+      border-radius: 4px;
+      padding: 14px 18px;
+      font-size: 13px;
+      color: #555555;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      background-color: #f0f4fb;
+      padding: 20px 40px;
+      text-align: center;
+      font-size: 12px;
+      color: #888888;
+      border-top: 1px solid #dce6f9;
+    }
+
+    .footer a {
+      color: #1a73e8;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="container">
+
+      <!-- HEADER -->
+      <div class="header">
+        <h1>{{subject}}</h1>
+      </div>
+
+      <!-- BODY -->
+      <div class="body">
+
+        <p class="greeting">
+          Bonjour <strong>{{nom}}</strong>,<br/>
+          Voici les informations de votre compte. Veuillez les conserver en lieu sûr.
+        </p>
+
+        <!-- INFO CARD -->
+        <div class="info-card">
+
+          <!-- Email -->
+          <div class="info-row">
+            <span class="info-label">📧 Email</span>
+            <span class="info-value">{{email}}</span>
+          </div>
+
+          <hr class="divider"/>
+
+          <!-- Mot de passe -->
+          <div class="info-row">
+            <span class="info-label">🔒 Mot de passe</span>
+            <span class="info-value password">{{mot_de_passe}}</span>
+          </div>
+
+          <hr class="divider"/>
+
+          <!-- Date -->
+          <div class="info-row">
+            <span class="info-label">📅 Date</span>
+            <span class="info-value">{{date}}</span>
+          </div>
+
+          <hr class="divider"/>
+
+          <!-- ID -->
+          <div class="info-row">
+            <span class="info-label">🪪 ID</span>
+            <span class="info-value id">#{{id}}</span>
+          </div>
+
+          <hr class="divider"/>
+
+          <!-- Location -->
+          {{!-- <div class="info-row">
+            <span class="info-label">📍 Localisation</span>
+            <span class="info-value">{{location}}</span>
+          </div> --}}
+
+        </div>
+        <!-- /INFO CARD -->
+
+        <!-- NOTE -->
+        <div class="note">
+          ⚠️ <strong>Important :</strong> Ne partagez jamais votre mot de passe avec quiconque.
+          Si vous n'êtes pas à l'origine de cette demande, contactez notre support immédiatement.
+        </div>
+
+        <p style="font-size:14px; color:#555; line-height:1.6;">
+          Cordialement,<br/>
+          <strong>L'équipe {{company}}</strong>
+        </p>
+
+      </div>
+      <!-- /BODY -->
+
+      <!-- FOOTER -->
+      <div class="footer">
+        © {{annee}} {{company}} — Tous droits réservés.<br/>
+        <a href="{{lien_desinscription}}">Se désabonner</a> · <a href="{{lien_confidentialite}}">Politique de confidentialité</a>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>
