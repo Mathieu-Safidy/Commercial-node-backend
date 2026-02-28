@@ -1,6 +1,6 @@
 const locationService = require("../services/locationService");
 const detailLocationService = require("../services/detailLocationService");
-
+const emailService = require("../services/mailService");
 class LocationController {
 
     async getLocations(req, res) {
@@ -38,7 +38,10 @@ class LocationController {
             const { idUser, idBox } = req.params;
 
             const updated = await locationService.validateUserBox(idUser, idBox);
-
+            if (updated) {
+                const data = await locationService.getDataValdation(idUser, updated.idLocation._id);
+                await emailService.sendMailLocation(data.email_Send, "Validation de votre location : "+data.id, data);
+            }
             res.json({
                 message: "Box validé avec succès",
                 detail: updated

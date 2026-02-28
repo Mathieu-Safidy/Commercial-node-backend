@@ -1,4 +1,5 @@
 const userRepo = require('../repositories/userRepositorie');
+const crypto = require("crypto");
 
 class UserService {
     async createUser(data) {
@@ -23,6 +24,15 @@ class UserService {
 
     async deleteUser(id) {
         return await userRepo.delete(id);
+    }
+
+
+    async generatePassword(length = 10) {
+        return crypto
+            .randomBytes(length)
+            .toString("base64")
+            .replace(/[^a-zA-Z0-9]/g, "")
+            .slice(0, length);
     }
 }
 
