@@ -14,7 +14,7 @@ class AuthController {
 
     static async register(req, res) {
         try {
-            const { email, username, password, role = 'Boutique' } = req.body;
+            const { email, username, password, role = 'User' } = req.body;
             console.log('token expiry ', process.env.ACCES_TOKEN_EXPIRY);
             console.log('refresh expiry ', process.env.REFRESH_TOKEN_EXPIRY);
             const newUser = await AuthService.register(email, username, password, role);
