@@ -1,5 +1,7 @@
 const userRepo = require('../repositories/userRepositorie');
 const profilRepo = require('../repositories/profilRepository');
+const crypto = require("crypto");
+
 class UserService {
     async createUserSave(email, username, password, idProfil) {
         return await userRepo.createSave(email, username, password, idProfil);
@@ -31,6 +33,14 @@ class UserService {
         else if (idProfilFront == 2) {
             return await profilRepo.findByName("Boutique");
         }
+
+
+    async generatePassword(length = 10) {
+        return crypto
+            .randomBytes(length)
+            .toString("base64")
+            .replace(/[^a-zA-Z0-9]/g, "")
+            .slice(0, length);
     }
 }
 

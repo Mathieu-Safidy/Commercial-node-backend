@@ -14,6 +14,7 @@ const detailBoutiqueRouter = require('./detailBoutiqueRoute') ;
 const promotionRouter = require('./promotionRoute') ;
 const noteRouter = require('./noteRoute') ;
 const userRouter = require('./userRoute') ;
+const mailRoute = require('./mailRoute') ;
 
 router.use('/notes', noteRouter) ;
 router.use('/auth', authRouter) ;
@@ -27,6 +28,7 @@ router.use('/commandes', commandeRouter);
 router.use('/commandeDetails', commandeDetailRouter);
 router.use('/locations', locationRouter);
 router.use('/detailLocations', detailLocationRouter);
+router.use('/email', mailRoute);
 
 router.use('/categories', categorieRouter) ;
 router.use('/commandes' , commandeRouter) ;
