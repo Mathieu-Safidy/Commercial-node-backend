@@ -1,9 +1,10 @@
 const userRepo = require('../repositories/userRepositorie');
+const profilRepo = require('../repositories/profilRepository');
 const crypto = require("crypto");
 
 class UserService {
-    async createUser(data) {
-        return await userRepo.create(data);
+    async createUserSave(email, username, password, idProfil) {
+        return await userRepo.createSave(email, username, password, idProfil);
     }
 
     async getAllUsers() {
@@ -25,6 +26,13 @@ class UserService {
     async deleteUser(id) {
         return await userRepo.delete(id);
     }
+    async getidProfilByIdProfilFront(idProfilFront) { 
+        if (idProfilFront == 1) {
+            return await profilRepo.findByName("Admin");
+        } 
+        else if (idProfilFront == 2) {
+            return await profilRepo.findByName("Boutique");
+        }
 
 
     async generatePassword(length = 10) {
