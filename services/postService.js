@@ -48,63 +48,61 @@ class PostService {
       { new: true },
     );
   }
+static async getPostsByRole(idUser) {
 
-  static async getPostsByRole(idUser) {
-    const user = await userModel.findById(idUser).populate("idProfil");
-    console.log(user, idUser);
-    let posts;
+  const user = await userModel
+    .findById(idUser)
+    .populate("idProfil")
+    .lean();
 
-    switch (user.idProfil.nom) {
-      case "Boutique": {
-        posts = await PostModel.find({ idUser, deletedAt: null }).populate([
-          { path: "images" },
-          {
-            path: "idUser",
-            populate: { path: "idProfil" },
-          },
-        ]);
-        break;
-      }
-      case "User": {
-        posts = await PostModel.find({ deletedAt: null }).populate([
-          { path: "images" },
-          {
-            path: "idUser",
-            populate: { path: "idProfil" },
-          },
-        ]);
-        break;
-      }
-      case "Admin":
-        posts = await PostModel.find({ deletedAt: null }).populate([
-          { path: "images" },
-          {
-            path: "idUser",
-            populate: { path: "idProfil" },
-          },
-        ]);
-        break;
-      default:
-        throw new Error("Invalid role");
+  if (!user) throw new Error("User not found");
+
+  const isBoutique = user.idProfil.nom === "Boutique";
+
+  // ✅ Une seule requête Post
+  const posts = await PostModel.find({
+    deletedAt: null,
+    ...(isBoutique && { idUser }) // filtre seulement si boutique
+  })
+  .sort({ createdAt: -1 })
+  .populate([
+    { path: "images" },
+    { 
+        path: "comment",
+        populate: { path: "idUser" }
+     },
+    {
+      path: "idUser",
+      populate: { path: "idProfil" }
     }
-    let postsFinal = Promise.all(posts.map(async (post) => {
-      const boutiquePosts = await boutiqueModel.findOne({
-        idUser: post.idUser._id,
-      });
-      if (boutiquePosts) {
-        return {
-          ...post.toObject(),
-          nom: boutiquePosts.nom,
-        };
-      } else {
-        return {
-          ...post.toObject(),
-          nom: post.idUser._id,
-        };
-      }
-    }));
-    return postsFinal;
-  }
+  ])
+  .lean();
+
+  // ✅ Récupérer toutes les boutiques d’un coup
+  const userIds = posts.map(p => p.idUser._id);
+
+  const boutiques = await boutiqueModel.find({
+    idUser: { $in: userIds }
+  }).lean();
+
+  const boutiqueMap = new Map(
+    boutiques.map(b => [b.idUser.toString(), b.nom])
+  );
+
+  // ✅ Transformation finale
+  const postsFinal = posts.map(post => {
+    const role = post.idUser.idProfil.nom;
+
+    return {
+      ...post,
+      nom:
+        boutiqueMap.get(post.idUser._id.toString()) ??
+        (role === "Admin" ? "Admin" : post.idUser._id)
+    };
+  });
+
+  return postsFinal;
+}
 
   static async updatePost(id, description, images) {
     const updatedPost = await PostModel.findByIdAndUpdate(

@@ -15,6 +15,12 @@ postSchema.virtual('images', {
   foreignField: 'idPost'
 });
 
+postSchema.virtual('comment', {
+    ref: 'commentaire',
+    localField: '_id',
+    foreignField: 'idPost'
+})
+
 postSchema.set('toObject', { virtuals: true });
 postSchema.set('toJSON', { virtuals: true });
 

@@ -17,6 +17,7 @@ const userRouter = require('./userRoute') ;
 const mailRoute = require('./mailRoute') ;
 const postRoute = require('./postRoute') ;
 const boutiqueRouter = require('./boutiqueRoute') ;
+const commentaireRouter = require('./commentaireRoute') ;
 
 router.use('/notes', noteRouter) ;
 router.use('/auth', authRouter) ;
@@ -33,6 +34,7 @@ router.use('/locations', locationRouter);
 router.use('/detailLocations', detailLocationRouter);
 router.use('/email', mailRoute);
 router.use('/posts', postRoute);
+router.use('/commentaires', commentaireRouter);
 
 router.use('/categories', categorieRouter) ;
 router.use('/commandes' , commandeRouter) ;
