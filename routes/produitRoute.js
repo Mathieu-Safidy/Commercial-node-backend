@@ -1,16 +1,7 @@
 const router = require('express').Router();
 const ProduitController = require('../controllers/produitController');
 var {authMiddleware , restrictedTo} = require('../middleware/authMiddleware') ;
-const multer = require('multer');
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads/');
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + '-' + file.originalname);
-    }
-});
-const upload = multer({ storage: storage });
+const upload = require('../middleware/chargerImage') ;
 
 router.get('/:id', ProduitController.getProduitById);
 router.get('/', ProduitController.getAllProduits);

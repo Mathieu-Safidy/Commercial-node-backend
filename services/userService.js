@@ -33,7 +33,7 @@ class UserService {
         else if (idProfilFront == 2) {
             return await profilRepo.findByName("Boutique");
         }
-
+    }
 
     async generatePassword(length = 10) {
         return crypto

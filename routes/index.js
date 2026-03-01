@@ -15,11 +15,14 @@ const promotionRouter = require('./promotionRoute') ;
 const noteRouter = require('./noteRoute') ;
 const userRouter = require('./userRoute') ;
 const mailRoute = require('./mailRoute') ;
+const postRoute = require('./postRoute') ;
+const boutiqueRouter = require('./boutiqueRoute') ;
 
 router.use('/notes', noteRouter) ;
 router.use('/auth', authRouter) ;
 router.use('/produits', produitRouter) ;
 router.use('/boxes', boxRouter);
+router.use('/boutiques', boutiqueRouter) ;
 
 const { authMiddleware } = require('../middleware/authMiddleware') ;
 router.use(authMiddleware);
@@ -29,6 +32,7 @@ router.use('/commandeDetails', commandeDetailRouter);
 router.use('/locations', locationRouter);
 router.use('/detailLocations', detailLocationRouter);
 router.use('/email', mailRoute);
+router.use('/posts', postRoute);
 
 router.use('/categories', categorieRouter) ;
 router.use('/commandes' , commandeRouter) ;
