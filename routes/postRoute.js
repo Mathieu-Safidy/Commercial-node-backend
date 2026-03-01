@@ -5,6 +5,7 @@ const upload = require('../middleware/chargerImage');
 router.get('/user/:idUser', PostController.getPostByRole);
 router.get('/:id', PostController.getPostById);
 router.get('/', PostController.getAllPosts);
+router.patch('/:id', PostController.updatePost);
 router.post('/', upload.array('images', 5), PostController.createPost);
 router.delete('/:id', PostController.deletePost);
 

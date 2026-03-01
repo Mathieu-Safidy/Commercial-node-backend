@@ -24,7 +24,15 @@ class PostService {
     }
     return await PostModel.findById(publishedPost._id).populate("images");
   }
-
+//   static async updatePost(id, description) {
+//     console.log('Donne',id, description);
+    
+//     return await PostModel.findByIdAndUpdate(
+//       id,
+//       { description, modifiedAt: new Date() },
+//       { new: true },
+//     );
+//   }
   static async getAllPosts() {
     return await PostModel.find({ deletedAt: null }).populate([
       { path: "images" },
@@ -74,6 +82,10 @@ static async getPostsByRole(idUser) {
     {
       path: "idUser",
       populate: { path: "idProfil" }
+    },
+    {
+        path: "likes",
+        populate: { path: "idUser" }
     }
   ])
   .lean();
@@ -104,11 +116,12 @@ static async getPostsByRole(idUser) {
   return postsFinal;
 }
 
-  static async updatePost(id, description, images) {
+  static async updatePost(id, description) {
+    console.log('Donne',id, description);
     const updatedPost = await PostModel.findByIdAndUpdate(
       id,
       { description, modifiedAt: new Date() },
-      { new: true },
+      { returnDocument: 'after' },
     );
     // if (images && images.length > 0) {
     //     await PostImagesModel.deleteMany({ idPost: id });

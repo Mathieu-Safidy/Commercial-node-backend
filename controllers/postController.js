@@ -45,10 +45,23 @@ class PostController {
         }
     }
 
+    static async updatePost(req, res) {
+        try {
+            const { id } = req.params;
+            const { description } = req.body;
+            console.log('Controller', id, description);
+            const updatedPost = await postService.updatePost(id, description);
+            res.status(200).json(updatedPost);
+        } catch (err) {
+            console.error(err);
+            res.status(400).json({ message: err.message });
+        }
+    }
+
     static async deletePost(req, res) {
         try {
             const deletedPost = await postService.deletePost(req.params.id);
-            res.json(deletedPost);
+            res.status(200).json(deletedPost);
         } catch (err) {
             console.error(err);
             res.status(400).json({ message: err.message });

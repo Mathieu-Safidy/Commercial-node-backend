@@ -19,7 +19,14 @@ postSchema.virtual('comment', {
     ref: 'commentaire',
     localField: '_id',
     foreignField: 'idPost'
-})
+});
+
+postSchema.virtual('likes', {
+    ref: 'like',
+    localField: '_id',
+    foreignField: 'idPost'
+});
+
 
 postSchema.set('toObject', { virtuals: true });
 postSchema.set('toJSON', { virtuals: true });
