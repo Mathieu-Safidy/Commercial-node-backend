@@ -53,13 +53,25 @@ class DetailBoutiqueController {
 
     async createDetail(req, res) {
         try {
+            const boutique = JSON.parse(req.body.boutique);
+            const detail = JSON.parse(req.body.detail);
+            if (req.file) {
+                boutique.image = req.file.path;
+            }
 
-            const { boutique, detail } = req.body;
-            const newBoutique = await boutiqueService.createBoutique(boutique);
+            const newBoutique = { 
+                nom: boutique.nom,
+                description: boutique.description,
+                idUser: boutique.idUser,
+                idCategorie: boutique.idCategorie,
+                image: boutique.image
+            }
+console.log("newBoutique", newBoutique);
+            const createdBoutique = await boutiqueService.createBoutique(newBoutique);
 
             const newDetail = await detailBoutiqueService.createDetail({
                 ...detail,
-                idBoutique: newBoutique._id
+                idBoutique: createdBoutique._id
             });
 
             res.status(201).json({
@@ -76,7 +88,8 @@ class DetailBoutiqueController {
     async updateBoutiqueAndDetail(req, res) {
         try {
             const userId = req.params.userId;
-            const { boutique, detail } = req.body;
+            const boutique = JSON.parse(req.body.boutique);
+            const detail = JSON.parse(req.body.detail);
             const boutiqueBase = await boutiqueService.getBoutiquesByUserId(userId);
 
             if (!boutiqueBase ) {
@@ -84,7 +97,17 @@ class DetailBoutiqueController {
             }
             const boutiqueObj = boutiqueBase[0];
             if (boutique?.nom) {
-                await boutiqueService.updateBoutique(boutiqueObj._id, boutique);
+                if (req.file) {
+                    boutique.image = req.file.path;
+                }
+                const newBoutique = { 
+                    nom: boutique.nom,
+                    description: boutique.description,
+                    idUser: boutique.idUser,
+                    idCategorie: boutique.idCategorie,
+                    image: boutique.image
+                }
+                await boutiqueService.updateBoutique(boutiqueObj._id, newBoutique);
             }
             // Récupérer le détail
             const details = await detailBoutiqueService.getDetailsByBoutiqueId(boutiqueObj._id);
@@ -115,6 +138,29 @@ class DetailBoutiqueController {
             await detailBoutiqueService.deleteDetail(req.params.id);
             res.json({ message: "DetailBoutique supprimé" });
         } catch (err) {
+            console.error(err);
+            res.status(400).json({ message: err.message });
+        }
+    }
+    async getDashboard(req , res ) { 
+        try { 
+            const { idBoutique } = req.params;
+            console.log("Data id", idBoutique); 
+            const chiffreAffaire = await boutiqueService.getChiffreAffaireByBoutiqueId(idBoutique);
+            const venteTotale = await boutiqueService.getTotalVente(idBoutique) ; 
+            const avisNote = await boutiqueService.getAvisNoteMoyenne(idBoutique) ;
+          //  const totalConsultation = await boutiqueService.totalConsultation(idBoutique) ; 
+            const totalConsultation  = 0 ;  
+            console.log("CA :::", chiffreAffaire ); 
+            console.log("VenteTotal ::: " , venteTotale) ;
+            console.log("Avis Note :::" , avisNote )  ; 
+            res.json({  
+                chiffreAffaire,
+                venteTotale,
+                avisNote , 
+                totalConsultation 
+            });
+        }catch(err){ 
             console.error(err);
             res.status(400).json({ message: err.message });
         }

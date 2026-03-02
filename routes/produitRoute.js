@@ -14,7 +14,7 @@ const upload = multer({ storage: storage });
 
 router.get('/:id', ProduitController.getProduitById);
 router.get('/', ProduitController.getAllProduits);
-
+router.get('/boutique/:idBoutique', ProduitController.getAllProduitsByIdBoutique) ; 
 router.use(authMiddleware);
 router.use(restrictedTo('Boutique'));
 

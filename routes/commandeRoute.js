@@ -14,6 +14,9 @@ router.post("/", commandeController.createCommande);
 // Mettre à jour une commande existante
 router.patch("/:id", commandeController.updateCommande);
 
+// Mettre à jour une commande existante
+router.patch("/valide/:id", commandeController.updateCommandeValide);
+router.get("/commandeBoutique/:idBoutique" , commandeController.getCommandeByIdBoutique) ; 
 // Supprimer une commande
 router.delete("/:id", commandeController.deleteCommande);
 

@@ -40,6 +40,17 @@ class CommandeController {
             res.status(400).json({ message: err.message });
         }
     }
+    async updateCommandeValide(req, res) {
+        try {
+            const newCommande = await commandeService.getCommandeById(req.params.id);
+            newCommande.status = "valide";
+            const updated = await commandeService.updateCommande(newCommande._id, newCommande);
+            res.json(updated);
+        } catch (err) {
+            console.error(err);
+            res.status(400).json({ message: err.message });
+        }
+    }
 
     async deleteCommande(req, res) {
         try {
@@ -53,8 +64,18 @@ class CommandeController {
     async confirmeClientCommande(req , res) {
         try{
             const { idUser } = req.params;
-            commandeService.addPanierCommande(idUser, "65fd9a4e8f2c4a1d9c123456") ;
+            await commandeService.addPanierCommande(idUser, "65fd9a4e8f2c4a1d9c123456") ;
         } catch(err) {
+            console.error(err);
+            res.status(400).json({ message: err.message });
+        }
+    }
+    async getCommandeByIdBoutique(req , res ) { 
+        try { 
+            const { idBoutique } = req.params ; 
+            const commande = await commandeService.getCommandeByIdBoutique(idBoutique) ; 
+            res.json( commande );
+        }catch(err) { 
             console.error(err);
             res.status(400).json({ message: err.message });
         }

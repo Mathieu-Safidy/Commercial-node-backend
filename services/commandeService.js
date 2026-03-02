@@ -39,7 +39,7 @@ class CommandeService {
                     id: cmd._id,
                     customer: cmd.idUser?.username || 'Client inconnu',
                     status: cmd.status,
-                    time: new Date(cmd.dateCommande).toLocaleTimeString(),
+                    time: new Date(cmd.dateCommande).toLocaleString('fr-FR'),
                     items,
                     total: total
                 };
@@ -60,42 +60,76 @@ class CommandeService {
     }
 
     async addPanierCommande(idUser, idVenteAchat) {
-
+    
         const panierUser = await panierService.getPanierActifByIdUser(idUser);
+        if (!panierUser) throw new Error("Aucun panier actif trouvé");
 
-        if (!panierUser) {
-            throw new Error("Aucun panier actif trouvé");
-        }
+        const panierDetails = await panierDetailService.getByPanierId(panierUser._id) ;
+        if (!panierDetails.length) throw new Error("Panier vide");
 
-        const panierDetails = await panierDetailService.getByPanierId(panierUser._id);
-        if (!panierDetails.length) {
-            throw new Error("Panier vide");
-        }
 
-        const commande = await commandeRepo.create({
-            idVenteAchat: idVenteAchat,
-            dateCommande: panierUser.createdAt,
-            idUser: idUser,
-            status: "en_cours"
+        const produitsParBoutique = {};
+        panierDetails.forEach(detail => {
+            const idBoutique = detail.idProduit.idBoutique._id; 
+            console.log("idBoutique : " +  idBoutique._id ) ;
+            if (!produitsParBoutique[idBoutique]) {
+                produitsParBoutique[idBoutique] = [];
+            }
+            produitsParBoutique[idBoutique].push(detail);
         });
-              
-        for (const detail of panierDetails) {
-            let prixPromo = this.promotionService.getPromotionByProduitRecent(detail.idProduit);
-            let prixFinal = prixPromo ? prixPromo.valeur : detail.idProduit.prixInitial;
-         
-            await commandeDetailRepo.create({
-                idCommande: commande._id,
-                idProduit: detail.idProduit,
-                quantite: detail.quantite,
 
+        const commandes = [];
+
+      
+        for (const idBoutique in produitsParBoutique) {
+            const details = produitsParBoutique[idBoutique];
+
+            const commande = await commandeRepo.create({
+                idVenteAchat,
+                dateCommande: new Date(),
+                idUser,
+                idBoutique,
+                status: "en_cours"
             });
-        }
-        // await panierService.updatePanier(panier._id, {
-        //     state: "valide"
-        // });
 
-        return commande;
+            
+            for (const detail of details) {
+                const prixPromo = await promotionService.getPromotionByProduitRecent(detail.idProduit);
+                const prixFinal = prixPromo ? prixPromo.valeur : detail.idProduit.prixInitial;
+
+                await commandeDetailRepo.create({
+                    idCommande: commande._id,
+                    idProduit: detail.idProduit._id,
+                    quantite: detail.quantite,
+                    prixFinal
+                });
+            }
+            commandes.push(commande);
+        }
+
+        return commandes;
     }
+
+    async getCommandeByIdBoutique(idBoutique) {
+        const commandes = await commandeRepo.findByIdBoutique(idBoutique);     
+        const orders = await Promise.all(
+            commandes.map(async (cmd) => {
+                const { items, total } = await this._calculateItemsAndTotal(cmd);
+                    console.log("username : " , cmd.idUser?.username) ;
+                return {
+                    id: cmd._id,
+                    customer: cmd.idUser?.username || 'Client inconnu',
+                    status: cmd.status,
+                    time: new Date(cmd.dateCommande).toLocaleString('fr-FR'),
+                    items,
+                    total: total
+                };
+            
+            })
+        );
+        return orders;
+    }
+
 }
 
 module.exports = new CommandeService();

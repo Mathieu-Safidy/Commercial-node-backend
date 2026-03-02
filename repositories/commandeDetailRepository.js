@@ -32,6 +32,10 @@ class CommandeDetailRepository {
     async delete(id) {
         return CommandeDetail.findByIdAndDelete(id);
     }
+    async findByProduit(idProduit) {
+        return CommandeDetail.find({ idProduit })
+           .populate('idCommande idProduit');
+    }
 }
 
 module.exports = new CommandeDetailRepository();
