@@ -33,9 +33,6 @@ const detailBoutiqueSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    image: {
-        type: String
-    },
     status: {
         type: Number,
         default: 0

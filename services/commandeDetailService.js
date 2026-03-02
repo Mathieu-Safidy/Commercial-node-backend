@@ -47,6 +47,9 @@ class CommandeDetailService {
     async deleteDetail(id) {
         return commandeDetailRepo.delete(id);
     }
+    async getDetailsByidProduit(idProduit) {
+        return commandeDetailRepo.findByProduit(idProduit);
+    }
 }
 
 module.exports = new CommandeDetailService();

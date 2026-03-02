@@ -21,8 +21,11 @@ class PanierDetailRepository {
     return await panierDetailModel.find({
       idPanier: idPanier,
       deletedAt: null
-    }).populate("idProduit");
-  };
+    }).populate({
+      path: "idProduit",
+      populate: { path: "idBoutique" } // maintenant detail.idProduit.idBoutique est le document complet
+    });
+    };
 };
 
 module.exports = PanierDetailRepository;

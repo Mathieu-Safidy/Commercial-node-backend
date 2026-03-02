@@ -16,6 +16,10 @@ const commandeDetailSchema = new Schema({
         type: Number,
         required: true
     },
+    prixFinal: {
+        type: Number,
+        required: true
+    },
     deletedAt: {
         type: Date,
         default: null,

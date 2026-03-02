@@ -10,6 +10,15 @@ class ProduitController {
             res.status(500).json({ message: error.message });
         }
     }
+    static getAllProduitsByIdBoutique = async (req, res) => { 
+        try { 
+            const idBoutique = req.params.idBoutique;
+            const boutiqueProduits = await ProduitService.getAllProduitsByIdBoutique(idBoutique) ; 
+            res.status(200).json(boutiqueProduits);
+        }catch(error) { 
+            res.status(500).json({ message: error.message });
+        }
+    }
 
     static saveProduit = async (req, res) => {
         try {

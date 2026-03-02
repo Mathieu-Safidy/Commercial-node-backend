@@ -12,7 +12,8 @@ const boutiqueShema = new mongoose.Schema({
     idUser: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     idCategorie: { type: mongoose.Schema.Types.ObjectId, ref: 'Categorie', required: true },
     createdAt: { type: Date, default: Date.now },
-    deletedAt: { type: Date, default: null }
+    deletedAt: { type: Date, default: null },
+    image : { type: String, required: false , default: '' }
 })
 
 module.exports = mongoose.model('boutique', boutiqueShema, 'boutique')
