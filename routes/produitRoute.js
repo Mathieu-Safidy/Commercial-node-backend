@@ -9,6 +9,8 @@ router.get('/', ProduitController.getAllProduits);
 router.use(authMiddleware);
 router.use(restrictedTo('Boutique'));
 
+router.get('/boutique/:idBoutique', ProduitController.getProduitsByBoutiqueId);
+
 router.patch('/:id', upload.single('image'), ProduitController.updateProduit);
 router.post('/', upload.single('image'), ProduitController.saveProduit);
 

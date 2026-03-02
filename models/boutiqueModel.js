@@ -10,7 +10,7 @@ const boutiqueShema = new mongoose.Schema({
     nom: { type: String, required: true },
     description: { type: String, required: true },
     idUser: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    idCategorie: { type: mongoose.Schema.Types.ObjectId, ref: 'Categorie', required: true },
+    idCategorie: { type: mongoose.Schema.Types.ObjectId, ref: 'categorie', required: true },
     createdAt: { type: Date, default: Date.now },
     deletedAt: { type: Date, default: null }
 })

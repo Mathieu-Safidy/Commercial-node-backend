@@ -49,6 +49,16 @@ class ProduitController {
         }
     }
 
+    static async getProduitsByBoutiqueId(req, res) {
+        try {
+            const idBoutique = req.params.idBoutique;
+            const produits = await ProduitService.getProduitsByBoutiqueId(idBoutique);
+            res.status(200).json(produits);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+
     static updateProduit = async (req, res) => {
         try {
             const id = req.params.id;
