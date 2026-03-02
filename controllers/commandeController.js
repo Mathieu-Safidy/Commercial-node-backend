@@ -53,9 +53,10 @@ class CommandeController {
     async confirmeClientCommande(req , res) {
         try{
             const { idUser } = req.params;
-            commandeService.addPanierCommande(idUser, "65fd9a4e8f2c4a1d9c123456") ;
+            await commandeService.addPanierCommande(idUser, "65fd9a4e8f2c4a1d9c123456") ;
+            res.status(200).json({ message: "Commande confirmée" });
         } catch(err) {
-            console.error(err);
+            console.error(err); 
             res.status(400).json({ message: err.message });
         }
     }

@@ -8,6 +8,7 @@ router.delete('/delete/details/:idDetail', PanierController.deleteDetailFromPani
 router.post('/add/details/:idUser', PanierController.addToPanier);
 router.post('/add', PanierController.createPanier);
 router.get('/actif/:idUser', PanierController.getPanierActifByIdUser);
+router.get('/termine/:idUser', PanierController.getPanierTermineByIdUser);
 router.get('', PanierController.getAllPaniers);
 
 module.exports = router;
