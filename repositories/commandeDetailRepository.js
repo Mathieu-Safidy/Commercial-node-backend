@@ -22,7 +22,9 @@ class CommandeDetailRepository {
 
     async findByCommande(idCommande) {
         return CommandeDetail.find({ idCommande })
-           .populate('idCommande idProduit');
+           .populate('idCommande')
+           .populate('idCommande')
+           ;
     }
 
     async update(id, data) {

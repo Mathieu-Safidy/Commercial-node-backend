@@ -37,7 +37,7 @@ class BoutiqueService {
 
     async getChiffreAffaireByBoutiqueId(idBoutique) {
         let chiffreAffaire = 0;
-        let listProduits = await ProduitService.getAllProduitsByBoutiqueId(idBoutique);
+        let listProduits = await ProduitService.getProduitsByBoutiqueId(idBoutique);
 
         for (let produit of listProduits) {
             let commandeDetails = await commandeDetailService.getDetailsByidProduit(produit._id)
@@ -57,7 +57,7 @@ class BoutiqueService {
 
     async getTotalVente(idBoutique) {
         let totalVente = 0;
-        let listProduits = await ProduitService.getAllProduitsByBoutiqueId(idBoutique) ;
+        let listProduits = await ProduitService.getProduitsByBoutiqueId(idBoutique) ;
         for (let produit of listProduits) {
             let commandeDetails = await commandeDetailService.getDetailsByidProduit(produit._id) ;
             for (let detail of commandeDetails) {
@@ -77,7 +77,7 @@ class BoutiqueService {
 
     async getDataProduitConsulte(idBoutique , mois , annee) { 
         let data = [];
-        let listProduits = await ProduitService.getAllProduitsByBoutiqueId(idBoutique) ;
+        let listProduits = await ProduitService.getProduitsByBoutiqueId(idBoutique) ;
         for (let produit of listProduits) {
             let consultation = await consultationService.findOrCreate(produit._id, mois, annee);
             data.push({
@@ -89,7 +89,7 @@ class BoutiqueService {
     }
     async totalConsultation(idBoutique) { 
        let total = 0 ; 
-       let listProduits = await ProduitService.getAllProduitsByBoutiqueId(idBoutique) ;
+       let listProduits = await ProduitService.getProduitsByBoutiqueId(idBoutique) ;
         for (let produit of listProduits) {
             let consultation = await consultationService.findByidProduit(produit._id);
             total += consultation.nombreConsultation; 

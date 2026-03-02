@@ -18,6 +18,7 @@ class PanierService {
       panier.details = await PanierDetailRepository.getPanierDetailsByPanierId(
         panier._id,
       );
+    //  console.log("Panier ::: " , panier.details) ; 
       if (panier.details) {
         panier.details = await Promise.all(
           panier.details.map(async (detail) => {
@@ -25,12 +26,14 @@ class PanierService {
             let produit = await ProduitRepository.getProduitById(
               detail.idProduit,
             );
+            console.log("produit :: " ,  produit); 
             produit.boutique = await BoutiqueRepository.getBoutiqueById(
               produit.idBoutique,
             );
             return { ...rest, produit };
           }),
         );
+         
       }
     }
     return panier;

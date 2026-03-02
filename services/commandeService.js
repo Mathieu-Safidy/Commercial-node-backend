@@ -21,7 +21,7 @@ class CommandeService {
         for (const d of details) {
             let promo = await promotionService.getPromotionByProduitRecent(d.idProduit);
 
-            let prixFinal = promo ? promo.valeur : d.idProduit.prixInitial;
+            let prixFinal = promo ? promo.valeur : 0 ;
 
             total += prixFinal * d.quantite;
         }
@@ -110,7 +110,7 @@ class CommandeService {
         return commandes;
     }
 
-    async getCommandeByIdBoutique(idBoutique) {
+    static async getCommandeByIdBoutique(idBoutique) {
         const commandes = await commandeRepo.findByIdBoutique(idBoutique);     
         const orders = await Promise.all(
             commandes.map(async (cmd) => {

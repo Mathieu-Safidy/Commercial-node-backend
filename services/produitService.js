@@ -27,7 +27,7 @@ class ProduitService {
 
 
     static getAllProduitsByIdBoutique = async (idBoutique) => {
-        let produits = await ProduitRepository.getAllProduitsByBoutiqueId(idBoutique);
+        let produits = await ProduitRepository.getProduitsByBoutiqueId(idBoutique);
         produits = await Promise.all(
             produits.map(async (produit) => {
                 let rest = { ...produit.toObject() };
