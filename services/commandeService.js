@@ -7,11 +7,11 @@ const {Schema} = require("mongoose");
 const promotionService = require('./promotionService');
 
 class CommandeService {
-    async createCommande(data) {
+    static async createCommande(data) {
         return commandeRepo.create(data);
     }
 
-   async _calculateItemsAndTotal(cmd) {
+   static async _calculateItemsAndTotal(cmd) {
         const details = await commandeDetailService.getDetailsByCommande(cmd._id);
 
         const items = details.reduce((sum, d) => sum + d.quantite, 0);
@@ -29,7 +29,7 @@ class CommandeService {
         return { items, total };
     }
 
-    async getAllCommandes() {
+    static async getAllCommandes() {
         const commandes = await commandeRepo.findAll(); // idUser et idVenteAchat
 
         const orders = await Promise.all(
@@ -47,20 +47,20 @@ class CommandeService {
         );
         return orders;
     }
-    async getCommandeById(id) {
+    static async getCommandeById(id) {
         return commandeRepo.findById(id);
     }
 
-    async updateCommande(id, data) {
+    static async updateCommande(id, data) {
         return commandeRepo.update(id, data);
     }
 
-    async deleteCommande(id) {
+    static async deleteCommande(id) {
         return commandeRepo.delete(id);
     }
 
-    async addPanierCommande(idUser, idVenteAchat) {
-    
+    static async addPanierCommande(idUser, idVenteAchat) {
+        
         const panierUser = await panierService.getPanierActifByIdUser(idUser);
         if (!panierUser) throw new Error("Aucun panier actif trouvé");
 
@@ -132,4 +132,4 @@ class CommandeService {
 
 }
 
-module.exports = new CommandeService();
+module.exports = CommandeService;

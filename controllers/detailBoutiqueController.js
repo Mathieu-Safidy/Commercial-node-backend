@@ -26,7 +26,8 @@ class DetailBoutiqueController {
         try{
             const { userId } = req.params
             const boutiqueBase = await boutiqueService.getBoutiquesByUserId(userId);
-            const details = await detailBoutiqueService.getDetailsByBoutiqueId(boutiqueBase[0]._id);
+            console.log("boutiqueBase in controller : ", boutiqueBase);
+            const details = await detailBoutiqueService.getDetailsByBoutiqueId(boutiqueBase._id);
 
 
             // console.log("userId:", userId);

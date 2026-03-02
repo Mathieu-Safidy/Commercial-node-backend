@@ -14,6 +14,9 @@ class PanierRepository {
   static getPanierActifByIdUser = async (idUser) => {
     return await panierModel.findOne({ idUser: idUser, deletedAt: null , state: 'en_cours' });
   }
+  static getPanierTermineByIdUser = async (idUser) => {
+    return await panierModel.find({ idUser: idUser, deletedAt: null , state: 'termine' });
+  }
   
   static savePanier = async (panier) => {
     const newPanier = new panierModel(panier);
@@ -22,6 +25,13 @@ class PanierRepository {
   static updatePanier = async (id, panier) => {
     return await panierModel.findByIdAndUpdate(id, panier, {
       new: true,
+      runValidators: true,
+    });
+  }
+
+  static validerPanier = async (id) => {
+    return await panierModel.findByIdAndUpdate(id, { state: 'termine' }, {
+      returnDocument: 'after',
       runValidators: true,
     });
   }

@@ -2,29 +2,29 @@ const panierDetailRepository = require("../repositories/panierDetailRepository")
 
 class PanierDetailService {
 
-    async createPanierDetail(data) {
+    static async createPanierDetail(data) {
         return panierDetailRepository.create(data);
     }
 
-    async getAllPanierDetails() {
+    static async getAllPanierDetails() {
         return panierDetailRepository.findAll();
     }
 
-    async getPanierDetailById(id) {
+    static async getPanierDetailById(id) {
         return panierDetailRepository.findById(id);
     }
 
-    async getByPanierId(idPanier) {
+    static async getByPanierId(idPanier) {
         return panierDetailRepository.findByPanierId(idPanier);
     }
 
-    async updatePanierDetail(id, data) {
+    static async updatePanierDetail(id, data) {
         return panierDetailRepository.update(id, data);
     }
 
-    async deletePanierDetail(id) {
+    static async deletePanierDetail(id) {
         return panierDetailRepository.softDelete(id);
     }
 }
 
-module.exports = new PanierDetailService();
+module.exports = PanierDetailService;

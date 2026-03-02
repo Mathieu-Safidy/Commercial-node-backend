@@ -23,6 +23,16 @@ class PanierController {
         }
     }
 
+    static getPanierTermineByIdUser = async (req, res) => {
+        try {
+            const { idUser } = req.params;
+            const paniers = await PanierService.getPanierTermineByIdUser(idUser);
+            res.status(200).json(paniers);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+
     static createPanier = async (req, res) => {
         try {
             const panier = req.body;

@@ -19,6 +19,7 @@ class BoutiqueService {
     }
 
     async getBoutiquesByUserId(idUser) {
+        console.log("idUser in service : ", idUser); 
         return boutiqueRepo.findByUserId(idUser);
     }
 

@@ -39,4 +39,5 @@ const detailBoutiqueSchema = new mongoose.Schema({
     }
 });
 
+
 module.exports = mongoose.model('detailBoutique', detailBoutiqueSchema, 'detailBoutique');

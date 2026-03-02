@@ -9,7 +9,9 @@ class AuthService {
     const profil = await ProfilRepository.findByName(role);
     console.log('profil ', profil);
     const user = await userModel.findOne({ email, idProfil: profil._id }).populate('idProfil');
+    console.log('User found: ', user);
     const isPasswordValid = user ? await this.comparePassword(password, user.password) : false;
+    console.log('Password valid: ', isPasswordValid);
       console.log(user, isPasswordValid)
     if (!user || !isPasswordValid) {
       throw new Error('Email ou mot de passe incorrect');
