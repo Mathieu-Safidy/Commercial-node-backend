@@ -8,7 +8,9 @@ class DetailBoutiqueRepository {
 
     async findAll() {
         return DetailBoutique.find()
-            .populate('idBoutique');
+            .populate([
+                { path: 'idBoutique', populate: { path: 'idCategorie' } }
+            ]);
     }
 
     async findById(id) {

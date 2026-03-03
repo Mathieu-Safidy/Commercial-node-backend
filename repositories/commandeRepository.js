@@ -21,6 +21,9 @@ class CommandeRepository {
     async delete(id) {
         return Commande.findByIdAndDelete(id);
     }
+    async findByIdBoutique(idBoutique) {
+        return Commande.find({ idBoutique }).populate('idUser'); 
+    }
 }
 
 module.exports = new CommandeRepository();

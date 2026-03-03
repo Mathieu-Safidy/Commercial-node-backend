@@ -25,6 +25,28 @@ class ProduitService {
         return produits;
     }
 
+
+    static getAllProduitsByIdBoutique = async (idBoutique) => {
+        let produits = await ProduitRepository.getProduitsByBoutiqueId(idBoutique);
+        produits = await Promise.all(
+            produits.map(async (produit) => {
+                let rest = { ...produit.toObject() };
+                const lastStock = await StockRepository.findLastStockByProduit(produit._id);
+                // console.log( "prduit : ",produit._id, lastStock);
+                rest.quantiteDisponible = lastStock ? lastStock.quantiteDisponible ?? 0 : 0;
+                
+                rest.boutique = await BoutiqueRepository.getBoutiqueById(produit.idBoutique);
+                let promotion = await promotionService.getPromotionByProduitRecent(produit._id);
+                // let promotionItem = promotionModel.create(promotion);
+                rest.reduction = promotion ? (promotion.reduction ? promotion.reduction : 0) : 0;
+                return rest;
+             
+            })
+        );
+        return produits;
+    }
+
+
     static saveProduit = async (produitData) => {
         const produit = await ProduitRepository.saveProduit(produitData);
         return produit;
@@ -37,6 +59,26 @@ class ProduitService {
     static getProduitById = async (id) => {
         const produit = await ProduitRepository.getProduitById(id);
         return produit;
+    }
+
+    static async getProduitsByBoutiqueId(idBoutique) {
+        let produits = await ProduitRepository.getProduitsByBoutiqueId(idBoutique);
+         produits = await Promise.all(
+            produits.map(async (produit) => {
+                let rest = { ...produit.toObject() };
+                const lastStock = await StockRepository.findLastStockByProduit(produit._id);
+                // console.log( "prduit : ",produit._id, lastStock);
+                rest.quantiteDisponible = lastStock ? lastStock.quantiteDisponible ?? 0 : 0;
+                
+                rest.boutique = await BoutiqueRepository.getBoutiqueById(produit.idBoutique);
+                let promotion = await promotionService.getPromotionByProduitRecent(produit._id);
+                // let promotionItem = promotionModel.create(promotion);
+                rest.reduction = promotion ? (promotion.reduction ? promotion.reduction : 0) : 0;
+                return rest;
+             
+            })
+        );
+        return produits;
     }
 }
 

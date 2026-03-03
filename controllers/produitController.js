@@ -10,6 +10,15 @@ class ProduitController {
             res.status(500).json({ message: error.message });
         }
     }
+    static getAllProduitsByIdBoutique = async (req, res) => { 
+        try { 
+            const idBoutique = req.params.idBoutique;
+            const boutiqueProduits = await ProduitService.getAllProduitsByIdBoutique(idBoutique) ; 
+            res.status(200).json(boutiqueProduits);
+        }catch(error) { 
+            res.status(500).json({ message: error.message });
+        }
+    }
 
     static saveProduit = async (req, res) => {
         try {
@@ -45,6 +54,16 @@ class ProduitController {
             res.status(200).json(produit);
         }
         catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+
+    static async getProduitsByBoutiqueId(req, res) {
+        try {
+            const idBoutique = req.params.idBoutique;
+            const produits = await ProduitService.getProduitsByBoutiqueId(idBoutique);
+            res.status(200).json(produits);
+        } catch (error) {
             res.status(500).json({ message: error.message });
         }
     }

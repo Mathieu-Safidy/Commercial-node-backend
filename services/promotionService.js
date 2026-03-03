@@ -2,22 +2,22 @@ const promotionRepo = require('../repositories/promotionRepository');
 
 class PromotionService {
 
-    async createPromotion(data) {
+    static async createPromotion(data) {
         return promotionRepo.create(data);
     }
 
-    async getAllPromotions() {
+    static async getAllPromotions() {
         return promotionRepo.findAll();
     }
 
-    async getPromotionById(id) {
+    static async getPromotionById(id) {
         return promotionRepo.findById(id);
     }
 
-    async getPromotionByProduit(idProduit) {
+    static async getPromotionByProduit(idProduit) {
         return promotionRepo.findByProduit(idProduit);
     }
-    async getPromotionByProduitRecent(idProduit) {
+    static async getPromotionByProduitRecent(idProduit) {
         const promotions = await promotionRepo.findByProduit(idProduit);
         if (promotions.length === 0) {
             return null;
@@ -25,17 +25,17 @@ class PromotionService {
         return promotions[promotions.length - 1];
     }
 
-    async updatePromotion(id, data) {
+    static async updatePromotion(id, data) {
         return promotionRepo.update(id, data);
     }
 
-    async deletePromotion(id) {
+    static async deletePromotion(id) {
         return promotionRepo.delete(id);
     }
-    async calculatePromotion(prix, reduction) {
+    static async calculatePromotion(prix, reduction) {
         return prix - (prix * (reduction / 100));
     }
 
 }
 
-module.exports = new PromotionService();
+module.exports = PromotionService;

@@ -21,7 +21,7 @@ class BoutiqueRepository {
     }
 
     static findByUserId = async (idUser) => {
-        return await boutiqueModel.find({ idUser })
+        return await boutiqueModel.findOne({ idUser })
             // .populate('idUser')
             // .populate('idCategorie');
     }

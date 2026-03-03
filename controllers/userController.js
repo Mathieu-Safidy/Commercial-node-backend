@@ -1,5 +1,5 @@
 // controllers/userController.js
-const UserService = require("../services/UserService");
+const UserService = require("../services/userService");
 
 class UserController {
 
@@ -11,8 +11,8 @@ class UserController {
 
             console.log('idProfilFront', idProfil);
             console.log('idProfilBack', newidProfil);
-    
-            const newUser = await UserService.createUserSave(email, username, password, newidProfil._id);
+            const passwordHash = await UserService.hashPassword(password);
+            const newUser = await UserService.createUserSave(email, username, passwordHash, newidProfil._id);
             res.status(201).json(newUser);
         } catch (error) {
             console.error(error);

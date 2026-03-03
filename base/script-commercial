@@ -326,7 +326,7 @@ db.createCollection("commande", {
       properties: {
         idVenteAchat: { bsonType: "objectId" },
         dateCommande: { bsonType: "date"},
-        status: { enum: ["en_cours", "terminee", "annulee"] },
+        status: { enum: ["en_cours", "valide", "annulee"] },
         idUser: { bsonType: "objectId" }
       }
     }
@@ -420,3 +420,17 @@ db.createCollection("panierDetail", {
     }
   }
 })
+
+db.createCollection("consultation", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      properties: {
+        idProduit: { bsonType: "objectId" },
+        moisConsultation: { bsonType: "int" },
+        anneeConsultation: { bsonType: "int" },
+         nombreConsultation: { bsonType: "int" }
+      }
+    }
+  }
+} )

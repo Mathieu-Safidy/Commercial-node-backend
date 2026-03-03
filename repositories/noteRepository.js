@@ -17,7 +17,9 @@ class NoteRepository {
     static async findNoteByProduit(idProduit) {
         return await NoteModel.find({ idProduit });
     }
-
+    static async findNoteByBoutique(idBoutique) {
+        return await NoteModel.find({ idBoutique });
+    } 
 
 }
 

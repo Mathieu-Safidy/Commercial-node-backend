@@ -22,7 +22,9 @@ class CommandeDetailRepository {
 
     async findByCommande(idCommande) {
         return CommandeDetail.find({ idCommande })
-           .populate('idCommande idProduit');
+           .populate('idCommande')
+           .populate('idCommande')
+           ;
     }
 
     async update(id, data) {
@@ -31,6 +33,10 @@ class CommandeDetailRepository {
 
     async delete(id) {
         return CommandeDetail.findByIdAndDelete(id);
+    }
+    async findByProduit(idProduit) {
+        return CommandeDetail.find({ idProduit })
+           .populate('idCommande idProduit');
     }
 }
 

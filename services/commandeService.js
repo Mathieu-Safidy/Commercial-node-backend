@@ -7,11 +7,11 @@ const {Schema} = require("mongoose");
 const promotionService = require('./promotionService');
 
 class CommandeService {
-    async createCommande(data) {
+    static async createCommande(data) {
         return commandeRepo.create(data);
     }
 
-   async _calculateItemsAndTotal(cmd) {
+   static async _calculateItemsAndTotal(cmd) {
         const details = await commandeDetailService.getDetailsByCommande(cmd._id);
 
         const items = details.reduce((sum, d) => sum + d.quantite, 0);
@@ -21,7 +21,7 @@ class CommandeService {
         for (const d of details) {
             let promo = await promotionService.getPromotionByProduitRecent(d.idProduit);
 
-            let prixFinal = promo ? promo.valeur : d.idProduit.prixInitial;
+            let prixFinal = promo ? promo.valeur : 0 ;
 
             total += prixFinal * d.quantite;
         }
@@ -29,7 +29,7 @@ class CommandeService {
         return { items, total };
     }
 
-    async getAllCommandes() {
+    static async getAllCommandes() {
         const commandes = await commandeRepo.findAll(); // idUser et idVenteAchat
 
         const orders = await Promise.all(
@@ -39,7 +39,7 @@ class CommandeService {
                     id: cmd._id,
                     customer: cmd.idUser?.username || 'Client inconnu',
                     status: cmd.status,
-                    time: new Date(cmd.dateCommande).toLocaleTimeString(),
+                    time: new Date(cmd.dateCommande).toLocaleString('fr-FR'),
                     items,
                     total: total
                 };
@@ -47,55 +47,89 @@ class CommandeService {
         );
         return orders;
     }
-    async getCommandeById(id) {
+    static async getCommandeById(id) {
         return commandeRepo.findById(id);
     }
 
-    async updateCommande(id, data) {
+    static async updateCommande(id, data) {
         return commandeRepo.update(id, data);
     }
 
-    async deleteCommande(id) {
+    static async deleteCommande(id) {
         return commandeRepo.delete(id);
     }
 
-    async addPanierCommande(idUser, idVenteAchat) {
-
+    static async addPanierCommande(idUser, idVenteAchat) {
+        
         const panierUser = await panierService.getPanierActifByIdUser(idUser);
+        if (!panierUser) throw new Error("Aucun panier actif trouvé");
 
-        if (!panierUser) {
-            throw new Error("Aucun panier actif trouvé");
-        }
+        const panierDetails = await panierDetailService.getByPanierId(panierUser._id) ;
+        if (!panierDetails.length) throw new Error("Panier vide");
 
-        const panierDetails = await panierDetailService.getByPanierId(panierUser._id);
-        if (!panierDetails.length) {
-            throw new Error("Panier vide");
-        }
 
-        const commande = await commandeRepo.create({
-            idVenteAchat: idVenteAchat,
-            dateCommande: panierUser.createdAt,
-            idUser: idUser,
-            status: "en_cours"
+        const produitsParBoutique = {};
+        panierDetails.forEach(detail => {
+            const idBoutique = detail.idProduit.idBoutique._id; 
+            console.log("idBoutique : " +  idBoutique._id ) ;
+            if (!produitsParBoutique[idBoutique]) {
+                produitsParBoutique[idBoutique] = [];
+            }
+            produitsParBoutique[idBoutique].push(detail);
         });
-              
-        for (const detail of panierDetails) {
-            let prixPromo = this.promotionService.getPromotionByProduitRecent(detail.idProduit);
-            let prixFinal = prixPromo ? prixPromo.valeur : detail.idProduit.prixInitial;
-         
-            await commandeDetailRepo.create({
-                idCommande: commande._id,
-                idProduit: detail.idProduit,
-                quantite: detail.quantite,
 
+        const commandes = [];
+
+      
+        for (const idBoutique in produitsParBoutique) {
+            const details = produitsParBoutique[idBoutique];
+
+            const commande = await commandeRepo.create({
+                idVenteAchat,
+                dateCommande: new Date(),
+                idUser,
+                idBoutique,
+                status: "en_cours"
             });
-        }
-        // await panierService.updatePanier(panier._id, {
-        //     state: "valide"
-        // });
 
-        return commande;
+            
+            for (const detail of details) {
+                const prixPromo = await promotionService.getPromotionByProduitRecent(detail.idProduit);
+                const prixFinal = prixPromo ? prixPromo.valeur : detail.idProduit.prixInitial;
+
+                await commandeDetailRepo.create({
+                    idCommande: commande._id,
+                    idProduit: detail.idProduit._id,
+                    quantite: detail.quantite,
+                    prixFinal
+                });
+            }
+            commandes.push(commande);
+        }
+        await panierService.validerPanier(panierUser?._id); 
+        return commandes;
     }
+
+    static async getCommandeByIdBoutique(idBoutique) {
+        const commandes = await commandeRepo.findByIdBoutique(idBoutique);     
+        const orders = await Promise.all(
+            commandes.map(async (cmd) => {
+                const { items, total } = await this._calculateItemsAndTotal(cmd);
+                    console.log("username : " , cmd.idUser?.username) ;
+                return {
+                    id: cmd._id,
+                    customer: cmd.idUser?.username || 'Client inconnu',
+                    status: cmd.status,
+                    time: new Date(cmd.dateCommande).toLocaleString('fr-FR'),
+                    items,
+                    total: total
+                };
+            
+            })
+        );
+        return orders;
+    }
+
 }
 
-module.exports = new CommandeService();
+module.exports = CommandeService;

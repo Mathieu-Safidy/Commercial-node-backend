@@ -1,4 +1,6 @@
+const commandeDetailService = require("../services/commandeDetailService");
 const commandeService = require("../services/commandeService");
+const StockService = require("../services/stockService");
 
 class CommandeController {
     async getCommandes(req, res) {
@@ -40,6 +42,22 @@ class CommandeController {
             res.status(400).json({ message: err.message });
         }
     }
+    async updateCommandeValide(req, res) {
+        try {
+            const newCommande = await commandeService.getCommandeById(req.params.id) ;
+            const commandeDetail = await commandeDetailService.getDetailByCommandeId( newCommande._id)  ;
+            newCommande.status = "valide";
+            console.log("commandeDetail :::" , commandeDetail) ;
+            for (const item of commandeDetail) {
+                await StockService.transactionStock(item.idProduit._id, item.quantite, "out");
+            }
+            const updated = await commandeService.updateCommande(newCommande._id, newCommande);
+            res.status(200).json(updated);
+        } catch (err) {
+            console.error(err);
+            res.status(400).json({ message: err.message });
+        }
+    }
 
     async deleteCommande(req, res) {
         try {
@@ -53,8 +71,19 @@ class CommandeController {
     async confirmeClientCommande(req , res) {
         try{
             const { idUser } = req.params;
-            commandeService.addPanierCommande(idUser, "65fd9a4e8f2c4a1d9c123456") ;
+            await commandeService.addPanierCommande(idUser, "65fd9a4e8f2c4a1d9c123456") ;
+            res.status(200).json({ message: "Commande confirmée" });
         } catch(err) {
+            console.error(err); 
+            res.status(400).json({ message: err.message });
+        }
+    }
+    async getCommandeByIdBoutique(req , res ) { 
+        try { 
+            const { idBoutique } = req.params ; 
+            const commande = await commandeService.getCommandeByIdBoutique(idBoutique) ; 
+            res.json( commande );
+        }catch(err) { 
             console.error(err);
             res.status(400).json({ message: err.message });
         }

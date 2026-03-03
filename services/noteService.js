@@ -20,6 +20,9 @@ class NoteService {
     static async findNoteByProduit(idProduit) {
         return await NoteRepository.findNoteByProduit(idProduit);
     }
+    static async findNoteByBoutique(idBoutique) {
+        return await NoteRepository.findNoteByBoutique(idBoutique);
+    }
 
 
 }

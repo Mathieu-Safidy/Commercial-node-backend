@@ -31,7 +31,10 @@ class StockService {
     }
 
     let newStock = lastStock.toObject();
+    delete newStock._id; 
     if (type === "in") {
+      newStock.quantiteSortie = 0;
+      newStock.quantiteDisponible = newStock.quantiteDisponible + quantity ; 
       newStock.quantity += quantity;
       newStock.quantitEntre = quantity;
       newStock.createdAt = new Date();
@@ -40,6 +43,8 @@ class StockService {
       if (lastStock.quantity < quantity) {
         throw new Error("Stock insuffisant");
       }
+      newStock.quantiteEntre = 0;
+      newStock.quantiteDisponible = newStock.quantiteDisponible - quantity ; 
       newStock.quantity -= quantity;
       newStock.quantiteSortie = quantity;
 

@@ -22,6 +22,11 @@ const commandeSchema = new Schema(
             type: String,
             required: true
         },
+        idBoutique: {
+            type: Schema.Types.ObjectId,
+            ref: 'boutique',
+            required: true
+        },
 
     },
 );

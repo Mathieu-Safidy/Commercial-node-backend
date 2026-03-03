@@ -13,6 +13,10 @@ class ProduitRepository {
     static updateProduit = async (id, produitData) => {
         return await produitModel.findByIdAndUpdate(id, produitData, { new: true });
     }
+
+    static getProduitsByBoutiqueId = async (idBoutique) => {
+        return await produitModel.find({ idBoutique }).populate('idCategorie');
+    }
 }
 
 
