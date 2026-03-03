@@ -18,7 +18,7 @@ class PanierService {
       panier.details = await PanierDetailRepository.getPanierDetailsByPanierId(
         panier._id,
       );
-    //  console.log("Panier ::: " , panier.details) ; 
+    console.log("Panier ::: " , panier) ; 
       if (panier.details) {
         panier.details = await Promise.all(
           panier.details.map(async (detail) => {

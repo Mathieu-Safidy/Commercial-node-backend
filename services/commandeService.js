@@ -106,7 +106,7 @@ class CommandeService {
             }
             commandes.push(commande);
         }
-
+        await panierService.validerPanier(panierUser?._id); 
         return commandes;
     }
 

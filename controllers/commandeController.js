@@ -1,4 +1,6 @@
+const commandeDetailService = require("../services/commandeDetailService");
 const commandeService = require("../services/commandeService");
+const StockService = require("../services/stockService");
 
 class CommandeController {
     async getCommandes(req, res) {
@@ -42,10 +44,15 @@ class CommandeController {
     }
     async updateCommandeValide(req, res) {
         try {
-            const newCommande = await commandeService.getCommandeById(req.params.id);
+            const newCommande = await commandeService.getCommandeById(req.params.id) ;
+            const commandeDetail = await commandeDetailService.getDetailByCommandeId( newCommande._id)  ;
             newCommande.status = "valide";
+            console.log("commandeDetail :::" , commandeDetail) ;
+            for (const item of commandeDetail) {
+                await StockService.transactionStock(item.idProduit._id, item.quantite, "out");
+            }
             const updated = await commandeService.updateCommande(newCommande._id, newCommande);
-            res.json(updated);
+            res.status(200).json(updated);
         } catch (err) {
             console.error(err);
             res.status(400).json({ message: err.message });
