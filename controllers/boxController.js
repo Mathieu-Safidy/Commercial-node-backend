@@ -3,7 +3,7 @@ const boxService = require("../services/boxService");
 class BoxController {
 
 
-    async getBoxes(req, res) {
+    static async getBoxes(req, res) {
         try {
             const boxes = await boxService.getAllBoxes();
             res.json(boxes);
@@ -14,7 +14,7 @@ class BoxController {
     }
 
 
-    async getBoxById(req, res) {
+    static async getBoxById(req, res) {
         try {
             const box = await boxService.getBoxById(req.params.id);
             if (!box) return res.status(404).json({ message: "Box introuvable" });
@@ -26,7 +26,7 @@ class BoxController {
     }
 
 
-    async createBox(req, res) {
+    static async createBox(req, res) {
         try {
             const box = await boxService.createBox(req.body);
             res.status(201).json(box);
@@ -37,7 +37,7 @@ class BoxController {
     }
 
 
-    async updateBox(req, res) {
+    static async updateBox(req, res) {
         try {
             const updatedBox = await boxService.updateBox(req.params.id, req.body);
             if (!updatedBox) return res.status(404).json({ message: "Box introuvable" });
@@ -49,7 +49,7 @@ class BoxController {
     }
 
 
-    async deleteBox(req, res) {
+    static async deleteBox(req, res) {
         try {
             const deletedBox = await boxService.deleteBox(req.params.id);
             if (!deletedBox) return res.status(404).json({ message: "Box introuvable" });
@@ -62,4 +62,4 @@ class BoxController {
 
 }
 
-module.exports = new BoxController();
+module.exports = BoxController;

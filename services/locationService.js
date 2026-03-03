@@ -52,12 +52,12 @@ class LocationService {
         if (!profil) {
             throw new Error("Profil 'Boutique' non trouvé");
         }
-        const newUser = await userService.createUser({
-            username: `boutique${idLocation.toString().padStart(5, '0')}`,
-            email: data.email,
-            password: await AuthService.hashPassword(data.mot_de_passe),
-            idProfil: profil._id
-        });
+        const newUser = await userService.createUserSave(
+            data.email,
+            `boutique${idLocation.toString().padStart(5, '0')}`,
+            await AuthService.hashPassword(data.mot_de_passe),
+            profil._id
+        );
         if (!newUser) {
             throw new Error("Erreur lors de la création du compte utilisateur pour la validation de la location");
         }
