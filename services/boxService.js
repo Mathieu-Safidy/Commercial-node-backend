@@ -2,25 +2,25 @@ const boxRepository = require("../repositories/boxRepository");
 
 class BoxService {
 
-    async createBox(data) {
+    static async createBox(data) {
         return boxRepository.create(data);
     }
 
-    async getAllBoxes() {
+    static async getAllBoxes() {
         return boxRepository.findAll();
     }
 
-    async getBoxById(id) {
+    static async getBoxById(id) {
         return boxRepository.findById(id);
     }
 
-    async updateBox(id, data) {
+    static async updateBox(id, data) {
         return boxRepository.update(id, data);
     }
 
-    async deleteBox(id) {
+    static async deleteBox(id) {
         return boxRepository.softDelete(id);
     }
 }
 
-module.exports = new BoxService();
+module.exports = BoxService;
