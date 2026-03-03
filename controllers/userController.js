@@ -52,6 +52,17 @@ class UserController {
             res.status(500).json({ message: error.message });
         }
     };
+
+    //Delete user 
+    static deleteUser = async ( req , res ) => { 
+        try { 
+         const { idUser } = req.params;
+         const update = await UserService.deleteUser( idUser ) ;
+         res.status(200).json(update);
+        }catch ( error ) { 
+            res.status(500).json( { message : error.message }) ; 
+        }
+    } ; 
 }
 
 // Exporter la classe pour utiliser les méthodes statiques
