@@ -53,6 +53,12 @@ jobs:
             echo "→ Création temporaire du fichier .env"
             echo "JWT_SECRETS=${{ secrets.JWT_SECRETS }}" > .env
             echo "JWT_REFRESH_SECRETS=${{ secrets.JWT_REFRESH_SECRETS }}" >> .env
+            echo "MAIL_PASS=${{ secrets.MAIL_PASS }}" >> .env
+            echo "MAIL_USER=${{ secrets.MAIL_USER }}" >> .env
+            echo "MAIL_HOST=${{ secrets.MAIL_HOST }}" >> .env
+            echo "MAIL_PORT=${{ secrets.MAIL_PORT }}" >> .env
+            echo "COMPANY_NAME=${{ secrets.COMPANY_NAME }}" >> .env
+            
 
             echo "→ Lancement du déploiement"
             docker compose up -d --build --force-recreate 2>&1 | tee docker-up.log
